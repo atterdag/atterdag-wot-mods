@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Parameters for squad window.
  * Параметры окна взвода.
  */

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Options for alive without Alt markers.
  * Настройки маркеров для живых без Alt.
  */
@@ -155,7 +155,7 @@
       "textFormat": {
         "font": "xvm",
         "size": 17,
-        "color": "{{c:wn8|#999999}}",
+        "color": "{{c:xr|#999999}}",
         "bold": false,
         "italic": false
       },
