@@ -17,7 +17,6 @@ from account_helpers.settings_core import settings_constants
 from account_helpers.settings_core.options import SettingsContainer
 from Avatar import PlayerAvatar
 from BattleReplay import g_replayCtrl
-from skeletons.gameplay import ReplayEventID
 from PlayerEvents import g_playerEvents
 from notification.actions_handlers import NotificationsActionsHandlers
 from notification.decorators import MessageDecorator
@@ -106,12 +105,13 @@ def _NotificationsActionsHandlers_handleAction(base, self, model, typeID, entity
 def onClientVersionDiffers():
     if BigWorld.wg_isFpsInfoStoreEnabled():
         BigWorld.wg_markFpsStoreFileAsFailed(g_replayCtrl._BattleReplay__fileName)
-        g_replayCtrl.stop()
+        g_replayCtrl._BattleReplay__onClientVersionConfirmDlgClosed(False)
         return
     if not (g_replayCtrl.scriptModalWindowsEnabled and not config.get('login/confirmOldReplays')):
-        g_replayCtrl.acceptVersionDiffering()
+        g_replayCtrl._BattleReplay__onClientVersionConfirmDlgClosed(True)
         return
-    g_replayCtrl.gameplay.postStateEvent(ReplayEventID.REPLAY_VERSION_CONFIRMATION)
+    g_appLoader.onGUISpaceEntered += g_replayCtrl._BattleReplay__onGUISpaceEntered
+    g_appLoader.showLogin()
 
 g_replayCtrl._BattleReplay__replayCtrl.clientVersionDiffersCallback = onClientVersionDiffers
 

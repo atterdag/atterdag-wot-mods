@@ -3,7 +3,7 @@
 import pprint
 
 from xfw import *
-from xfw_actionscript.python import swf
+from xfw import swf
 from xfw.constants import PATH
 
 if swf.g_xvmlogger is None:
