@@ -51,7 +51,6 @@ from items.vehicles import VEHICLE_CLASS_TAGS
 
 from xfw import *
 import xfw.utils as xfwutils
-from xfw_actionscript.python import *
 
 import config
 from consts import *

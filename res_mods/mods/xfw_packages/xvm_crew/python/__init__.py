@@ -16,7 +16,6 @@ from helpers import dependency
 from skeletons.gui.shared import IItemsCache
 
 from xfw import *
-from xfw_actionscript.python import *
 
 import xvm_main.python.config as config
 from xvm_main.python.logger import *
