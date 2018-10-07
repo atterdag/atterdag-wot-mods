@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Hit log (my hits calculator).
  * For additional settings see battleLabelsTemplates.xc/hitlog
  * Лог попаданий (счетчик своих попаданий).

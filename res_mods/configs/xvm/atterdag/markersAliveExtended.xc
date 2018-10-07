@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Options for alive with Alt markers.
  * Настройки маркеров для живых с Alt.
  */
@@ -128,7 +128,7 @@
       "textFormat": {
         "font": "$FieldFont",
         "size": 13,
-        "color": "{{c:wn8}}",
+        "color": "{{c:xr}}",
         "bold": false,
         "italic": false
       },
@@ -141,7 +141,7 @@
         "blur": 6,
         "strength": 2
       },
-      "format": "{{wn8}}"
+      "format": "{{r}}"
     }
   },
   // Settings for allies.
