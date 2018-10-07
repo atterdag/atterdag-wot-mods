@@ -21,7 +21,6 @@ from helpers import dependency
 from skeletons.gui.shared.utils import IHangarSpace
 
 from xfw import *
-from xfw_actionscript.python import *
 from xfw_ping.python import ping as xfw_ping
 
 from xvm_main.python.logger import *

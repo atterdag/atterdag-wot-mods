@@ -18,7 +18,6 @@ from helpers import dependency
 from skeletons.connection_mgr import IConnectionManager
 
 from xfw import *
-from xfw_actionscript.python import *
 
 from xvm_main.python.logger import *
 import xvm_main.python.config as config
