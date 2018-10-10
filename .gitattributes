@@ -1,18 +1,3 @@
-*.swf filter=lfs diff=lfs merge=lfs -text
-*.wotmod filter=lfs diff=lfs merge=lfs -text
-*.pyc filter=lfs diff=lfs merge=lfs -text
-*.bnk filter=lfs diff=lfs merge=lfs -text
-*.mp3 filter=lfs diff=lfs merge=lfs -text
-.bat -crlf
-.json -crlf
-.md -crlf
-.nsi -crlf
-.ps1 -crlf
-.py -crlf
-.sample -crlf
-.txt -crlf
-.url -crlf
-.xc -crlf
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
 
