@@ -22,6 +22,7 @@ from helpers import dependency
 from skeletons.gui.shared import IItemsCache
 from messenger.gui.Scaleform.lobby_entry import LobbyEntry
 from gui.game_control.hero_tank_controller import HeroTankController
+from gui.promo.hangar_teaser_widget import TeaserViewer
 
 from xfw import *
 
@@ -86,7 +87,7 @@ def BarracksMeta_as_setTankmenS(base, self, data):
         if cfg_hangar_barracksShowFlags or cfg_hangar_barracksShowSkills:
             imgPath = 'img://../mods/shared_resources/xvm/res/icons/barracks'
             for tankman in data['tankmenData']:
-                if 'role' not in tankman:
+                if ('role' not in tankman) or tankman['notRecruited']:
                     continue
                 tankman['rank'] = tankman['role']
                 tankman_role_arr = []
@@ -96,12 +97,13 @@ def BarracksMeta_as_setTankmenS(base, self, data):
                     tankman_role_arr.append('')
                     itemsCache = dependency.instance(IItemsCache)
                     tankman_full_info = itemsCache.items.getTankman(tankman['tankmanID'])
-                    for skill in tankman_full_info.skills:
-                        tankman_role_arr[-1] += "<img src='%s/skills/%s' vspace='-3'>" % (imgPath, skill.icon)
-                    if len(tankman_full_info.skills):
-                        tankman_role_arr[-1] += "%s%%" % tankman_full_info.descriptor.lastSkillLevel
-                    if tankman_full_info.hasNewSkill and tankman_full_info.newSkillCount[0] > 0:
-                        tankman_role_arr[-1] += "<img src='%s/skills/new_skill.png' vspace='-3'>x%s" % (imgPath, tankman_full_info.newSkillCount[0])
+                    if tankman_full_info is not None:
+                        for skill in tankman_full_info.skills:
+                            tankman_role_arr[-1] += "<img src='%s/skills/%s' vspace='-3'>" % (imgPath, skill.icon)
+                        if len(tankman_full_info.skills):
+                            tankman_role_arr[-1] += "%s%%" % tankman_full_info.descriptor.lastSkillLevel
+                        if tankman_full_info.hasNewSkill and tankman_full_info.newSkillCount[0] > 0:
+                            tankman_role_arr[-1] += "<img src='%s/skills/new_skill.png' vspace='-3'>x%s" % (imgPath, tankman_full_info.newSkillCount[0])
                     if not tankman_role_arr[-1]:
                         tankman_role_arr[-1] = l10n('noSkills')
                 tankman['role'] = ' '.join(tankman_role_arr)
@@ -177,3 +179,10 @@ def updateSettings(base, self):
     if not config.get('hangar/showPromoPremVehicle', True):
         return
     base(self)
+
+# hide display of the widget with ads
+@overrideMethod(TeaserViewer, 'show')
+def show(base, self, teaserData, promoCount):
+    if not config.get('hangar/showTeaserWidget', True):
+        return
+    base(self, teaserData, promoCount)
