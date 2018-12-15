@@ -37,7 +37,10 @@
       "hideSiegeIndicator": false,
       // true - hide the tips about switching to menu Personal Missions.
       // true - скрыть подсказку перехода в меню ЛБЗ.
-      "hideQuestProgress": false
+      "hideQuestProgress": false,
+      // true - hide the tips of the transition to the window of exploring the features of the machine (for wheeled vehicles).
+      // true - скрыть подсказку перехода к окну знакомства с особенностями машины (для колесной техники).
+      "hideHelpScreen": false
     },
     // GUI elements settings (experts only)
     // Настройки графических элементов (только для экспертов!)
