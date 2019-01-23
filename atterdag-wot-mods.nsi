@@ -14,7 +14,7 @@
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 3
 !define VERSIONPATCH 0
-!define VERSIONBUILD 1
+!define VERSIONBUILD 2
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "https://github.com/atterdag/atterdag-wot-mods/issues"   # "Support Information" link
@@ -25,7 +25,7 @@
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)
 
-InstallDir "F:\Games\World_of_Tanks"
+InstallDir "D:\Games\World_of_Tanks_EU"
 
 # rtf or txt file - remember if it is txt, it must be in the DOS text format (\r\n)
 LicenseData "atterdag-wot-mods\disclaimer.txt"
@@ -132,9 +132,9 @@ section "uninstall"
 	Delete "$INSTDIR\mods\1.3.0.1\spoter\spoter.crewExtended_5.03.wotmod"
 	Delete "$INSTDIR\mods\1.3.0.1\mod_mods_gui_2.15.wotmod"
 	Delete "$INSTDIR\mods\1.3.0.1\gambiter.guiflash_0.2.5.1.wotmod"
-	Delete "$INSTDIR\mods\1.3.0.1\com.modxvm.xfw_7.7.8.1097.wotmod"
+	Delete "$INSTDIR\mods\1.3.0.1\com.modxvm.xfw_7.7.9.1099.wotmod"
 	Delete "$INSTDIR\mods\1.3.0.1\com.modxvm.xfw.native_1.4.1.00076.wotmod"
-	Delete "$INSTDIR\mods\1.3.0.1\com.modxvm.xfw.actionscript_7.7.8.1097.wotmod"
+	Delete "$INSTDIR\mods\1.3.0.1\com.modxvm.xfw.actionscript_7.7.9.1099.wotmod"
 	Delete "$INSTDIR\res_mods\mods\xfw_packages\xvm_tooltips\python\__version__.py"
 	Delete "$INSTDIR\res_mods\mods\xfw_packages\xvm_tooltips\python\__init__.py"
 	Delete "$INSTDIR\res_mods\mods\xfw_packages\xvm_tooltips\xfw_package.json"
