@@ -1,0 +1,21 @@
+{
+    "id": "com.modxvm.xvm",
+    "name": "XVM",
+    "description": "XVM",
+
+    "version": "7.8.0.8766",
+
+    "dependencies": ["com.modxvm.xfw"],
+    "dependencies_optional": [
+        "com.modxvm.xfw.filewatcher", 
+        "com.modxvm.xfw.mutex"
+    ],
+
+    "url": "https://modxvm.com/",
+    "url_update": "https://modxvm.com/",
+
+    "wot_version_min": "1.4.0.0",
+    "wot_version_exactmatch": false,
+
+    "features": ["actionscript", "python"]
+}
