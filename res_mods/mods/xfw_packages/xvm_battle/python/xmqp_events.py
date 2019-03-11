@@ -164,10 +164,12 @@ def _DestroyTimersPanel_showDeathZoneTimer(self, value):
                 'enable':False,
                 'code':'ALL'})
         elif value.needToCloseTimer():
-            xmqp.call({
-                'event':EVENTS.XMQP_DEATH_ZONE_TIMER,
-                'enable':False,
-                'code':value.code})
+            try:
+                xmqp.call({
+                    'event':EVENTS.XMQP_DEATH_ZONE_TIMER,
+                    'enable':False,
+                    'code':value.code})
+            except: pass
         else:
             xmqp.call({
                 'event': EVENTS.XMQP_DEATH_ZONE_TIMER,

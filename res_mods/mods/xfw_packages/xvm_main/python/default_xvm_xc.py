@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' Generated automatically by XVM builder '''
-DEFAULT_XVM_XC = '''/**
+DEFAULT_XVM_XC = '''﻿/**
  * The boot configs file. To use - rename to xvm.xc.
  *
  * Reference format: ${"path to config file":"."}

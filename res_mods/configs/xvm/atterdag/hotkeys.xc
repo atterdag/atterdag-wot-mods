@@ -4,8 +4,8 @@
  */
 {
   "hotkeys": {
-    // keycodes below.
-    // коды клавиш внизу файла.
+    // Keycodes see keycodes.txt.
+    // Коды клавиш см. keycodes.txt.
     // onHold: false - take action by key click. true - while key is remains pressed.
     // onHold: false - произвести действие по разовому нажатию клавиши. true - по удержанию.
     //

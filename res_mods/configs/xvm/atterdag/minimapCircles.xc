@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Minimap circles. Only real map meters. Only for own unit.
  * Круги на миникарте. Дистанция только в реальных метрах карты. Только для своей техники.
  */
@@ -9,9 +9,9 @@
   "rangeCircle": { "enabled": true, "thickness": 1, "alpha": 60, "color": "0xEE4444" },
 
   "circles": {
-    // TODO: better description and translation
-    // View distance
-    // Дальность обзора
+    // TODO: better description and translation.
+    // View distance.
+    // Дальность обзора.
     // Параметры:
     //   "enabled": false - выключен
     //   "distance" - дистанция
@@ -46,12 +46,12 @@
       { "enabled":  true, "distance": "motion",    "scale": 1, "thickness":  1.0, "alpha": 60, "color": "0x0000FF" },
       { "enabled":  true, "distance": "dynamic",   "scale": 1, "thickness":  1.0, "alpha": 60, "color": "0x3EB5F1" }
     ],
-    // Maximum range of fire for artillery
+    // Maximum range of fire for artillery.
     // Artillery gun fire range may differ depending on vehicle angle relative to ground
     // and vehicle height positioning relative to target. These factors are not considered.
     // See pics at https://kr.cm/f/t/2076/c/35697/
     // ------------------------------------------------------------------------------------------------
-    // Максимальная дальность стрельбы для артиллерии
+    // Максимальная дальность стрельбы для артиллерии.
     // Дальнобойность арты может меняться в зависимости от углов постановки машины на склонах местности
     // и высоте расположения машины относительно цели. На миникарте эти факторы не учитываются.
     // Подробнее по ссылке: https://kr.cm/f/t/2076/c/35697/
@@ -69,8 +69,8 @@
     // Названия танков для дополнения брать по ссылке (символ : заменяется -):
     // https://bitbucket.org/XVM/xvm/src/default/src/xpm/xvm_main/vehinfo_short.py
     "special": [
-      // Example: Artillery gun fire range circle
-      // Пример: Круг дальности стрельбы арты
+      // Example: Artillery gun fire range circle.
+      // Пример: Круг дальности стрельбы арты.
       // "enabled": false - выключен; "thickness" - толщина; "alpha" - прозрачность; "color" - цвет.
       //{ "ussr-SU-18": { "enabled": true, "thickness": 1, "alpha": 60, "color": "0xEE4444", "distance": 500 } },
       { "ussr-SU-18":                  {"$ref": { "path": "rangeCircle" }, "distance": 500 } },

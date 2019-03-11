@@ -20,9 +20,11 @@ from gui.Scaleform.locale.MENU import MENU
 from gui.shared.gui_items.Vehicle import Vehicle
 from helpers import dependency
 from skeletons.gui.shared import IItemsCache
+from gui.Scaleform.daapi.view.meta.MessengerBarMeta import MessengerBarMeta
 from messenger.gui.Scaleform.lobby_entry import LobbyEntry
 from gui.game_control.hero_tank_controller import HeroTankController
 from gui.promo.hangar_teaser_widget import TeaserViewer
+from gui.game_control.PromoController import PromoController
 
 from xfw import *
 
@@ -111,7 +113,6 @@ def BarracksMeta_as_setTankmenS(base, self, data):
         err(traceback.format_exc())
     return base(self, data)
 
-
 # low ammo => vehicle not ready
 @overrideMethod(Vehicle, 'isReadyToPrebattle')
 def Vehicle_isReadyToPrebattle(base, self, *args, **kwargs):
@@ -124,7 +125,6 @@ def Vehicle_isReadyToPrebattle(base, self, *args, **kwargs):
         err(traceback.format_exc())
     return base(self, *args, **kwargs)
 
-
 # low ammo => vehicle not ready
 @overrideMethod(Vehicle, 'isReadyToFight')
 def Vehicle_isReadyToFight(base, self, *args, **kwargs):
@@ -136,7 +136,6 @@ def Vehicle_isReadyToFight(base, self, *args, **kwargs):
     except Exception as ex:
         err(traceback.format_exc())
     return base.fget(self, *args, **kwargs) # base is property
-
 
 # low ammo => vehicle not ready (disable red button)
 @overrideMethod(CurrentVehicleActionsValidator, '_validate')
@@ -159,6 +158,13 @@ def _i18n_makeString(base, key, *args, **kwargs):
         return l10n('lowAmmo')
     return base(key, *args, **kwargs)
 
+# hide referral program button
+@overrideMethod(MessengerBarMeta, 'as_setInitDataS')
+def MessengerBarMeta_as_setInitDataS(base, self, data):
+    if not config.get('hangar/showReferralButton', True) and ('isReferralEnabled' in data):
+        data['isReferralEnabled'] = False
+    return base(self, data)
+
 # hide shared chat button
 @overrideMethod(LobbyEntry, '_LobbyEntry__handleLazyChannelCtlInited')
 def handleLazyChannelCtlInited(base, self, event):
@@ -180,9 +186,17 @@ def updateSettings(base, self):
         return
     base(self)
 
-# hide display of the widget with ads
+# hide display pop-up messages in the hangar
 @overrideMethod(TeaserViewer, 'show')
 def show(base, self, teaserData, promoCount):
-    if not config.get('hangar/showTeaserWidget', True):
+    if not config.get('hangar/combatIntelligence/showPopUpMessages', True):
         return
     base(self, teaserData, promoCount)
+
+# hide display unread notifications counter in the menu
+@overrideMethod(PromoController, 'getPromoCount')
+def getPromoCount(base, self):
+    if not config.get('hangar/combatIntelligence/showUnreadCounter', True):
+        return
+    base(self)
+    
