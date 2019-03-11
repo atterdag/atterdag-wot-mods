@@ -5,7 +5,7 @@ Please refer to **[master branch](https://github.com/atterdag/atterdag-wot-mods)
 I've used a familiar face to bring comfort with the 6th sense kicks in, with branding the game start logo, and the data synchronization icon.
 
 # Download #
-Just install using the installer, which you can download here >>>  [atterdag-wot-mods-1.2.0.0.exe](https://dl.dropboxusercontent.com/u/11915528/wot/atterdag-wot-mods-1.2.0.0.exe)
+Just install using the installer, which you can download here >>>  [atterdag-wot-mods-1.4.0.2.exe](https://dl.dropboxusercontent.com/u/11915528/wot/atterdag-wot-mods-1.4.0.2.exe)
 
 # Screenshots #
 ## Game/garage loading ##

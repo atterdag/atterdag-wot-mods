@@ -1,5 +1,5 @@
 # Addons: "DamageLog"
-# ktulho <http://www.koreanrandom.com/forum/user/17624-ktulho/>
+# ktulho <https://kr.cm/f/p/17624/>
 
 import copy
 
@@ -12,7 +12,7 @@ from Avatar import PlayerAvatar
 from Vehicle import Vehicle
 from VehicleEffects import DamageFromShotDecoder
 from vehicle_systems.tankStructure import TankPartIndexes
-from constants import ITEM_DEFS_PATH, DAMAGE_INFO_CODES, ARENA_GUI_TYPE, VEHICLE_CLASSES
+from constants import ITEM_DEFS_PATH, DAMAGE_INFO_CODES, VEHICLE_CLASSES
 from gui.Scaleform.daapi.view.battle.shared.damage_log_panel import DamageLogPanel
 from gui.Scaleform.daapi.view.battle.shared.battle_loading import BattleLoading
 from gui.Scaleform.daapi.view.meta.DamagePanelMeta import DamagePanelMeta
@@ -29,6 +29,7 @@ from xvm_main.python.logger import *
 from xvm_main.python.stats import _stat
 import xvm_main.python.config as config
 import xvm_main.python.userprefs as userprefs
+from xvm_battle.python.battle import isBattleTypeSupported
 
 import parser_addon
 
@@ -471,9 +472,21 @@ class Data(object):
             self.data['criticalHit'] = True
 
     def onHealthChanged(self, vehicle, newHealth, attackerID, attackReasonID):
-        if self.data['attackReasonID'] not in [24, 25]:
+        self.data['blownup'] = (newHealth <= -5)
+        newHealth = max(0, newHealth)
+        self.data['damage'] = self.data['oldHealth'] - newHealth
+        self.data['oldHealth'] = newHealth
+        if self.data['damage'] < 0:
+            return
+        if attackReasonID < 8:
             self.data['attackReasonID'] = attackReasonID
-        self.data['blownup'] = (newHealth == -13) or (newHealth == -5)
+        elif attackReasonID in [9, 10, 13, 24]:
+            self.data['attackReasonID'] = 24
+        elif attackReasonID in [11, 14, 25]:
+            self.data['attackReasonID'] = 25
+
+        self.data['isDamage'] = (self.data['damage'] > 0)
+        self.data['isAlive'] = (newHealth > 0) and bool(vehicle.isCrewActive)
         self.data['hitEffect'] = HIT_EFFECT_CODES[4]
         if self.data['attackReasonID'] != 0:
             self.data['costShell'] = 'unknown'
@@ -485,11 +498,6 @@ class Data(object):
         else:
             self.data['reloadGun'] = self.timeReload(attackerID)
         self.data['attackerID'] = attackerID
-        newHealth = max(0, newHealth)
-        self.data['isDamage'] = (newHealth != self.data['oldHealth'])
-        self.data['damage'] = self.data['oldHealth'] - newHealth
-        self.data['isAlive'] = (newHealth > 0) and bool(vehicle.isCrewActive)
-        self.data['oldHealth'] = newHealth
         self.updateData()
 
 
@@ -840,13 +848,10 @@ _logAltBackground = DamageLog(SECTION_LOG_ALT_BACKGROUND)
 _lastHit = LastHit(SECTION_LASTHIT)
 
 
-def _isShowDamageLog(player):
-    global isShowDamageLog
-    isShowDamageLog = config.get(DAMAGE_LOG_ENABLED) and (player.arenaGuiType not in [ARENA_GUI_TYPE.EPIC_BATTLE, ARENA_GUI_TYPE.EVENT_BATTLES])
-
 @registerEvent(PlayerAvatar, 'onBecomePlayer')
 def _PlayerAvatar_onBecomePlayer(self):
-    _isShowDamageLog(self)
+    global isShowDamageLog
+    isShowDamageLog = config.get(DAMAGE_LOG_ENABLED) and isBattleTypeSupported
 
 @overrideMethod(DamageLogPanel, '_addToTopLog')
 def DamageLogPanel_addToTopLog(base, self, value, actionTypeImg, vehicleTypeImg, vehicleName, shellTypeStr, shellTypeBG):
@@ -932,7 +937,8 @@ def updateVehicleHealth(self, vehicleID, health, deathReasonID, isCrewActive, is
 @registerEvent(Vehicle, 'onEnterWorld')
 def Vehicle_onEnterWorld(self, prereqs):
     if self.isPlayerVehicle:
-        _isShowDamageLog(BigWorld.player())
+        global isShowDamageLog
+        isShowDamageLog = config.get(DAMAGE_LOG_ENABLED) and isBattleTypeSupported
         if isShowDamageLog:
             global on_fire, damageLogConfig, autoReloadConfig, chooseRating
             scale = config.networkServicesSettings.scale
@@ -948,6 +954,7 @@ def Vehicle_onEnterWorld(self, prereqs):
             on_fire = 0
             data.data['oldHealth'] = self.health
             data.data['maxHealth'] = self.health
+            data.data['isAlive'] = (self.health > 0) and bool(self.isCrewActive)
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
