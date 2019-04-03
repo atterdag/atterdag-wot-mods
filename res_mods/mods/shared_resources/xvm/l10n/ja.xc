@@ -23,6 +23,7 @@
     "ramming": "体当たり",
     "world_collision": "落下",
     "death_zone": "デスゾーン",
+    "pillbox": "",
     "Hits": "命中",
     "Total": "総ダメージ",
     "Last": "直近",

@@ -1,4 +1,76 @@
-﻿XVM-7.8.4
+﻿XVM-7.8.6:
+  [GENERAL]
+  * World of Tanks 1.4.1.1
+
+  [HANGAR]
+  * restored functionality of the options:
+      "login"/"saveLastServer" - save last server
+      "hangar"/"hidePricesInTechTree" - hide price button in tech tree
+      "hangar"/"masteryMarkInTechTree" - show mastery mark in tech tree
+
+XVM-7.8.5:
+  [GENERAL]
+  * World of Tanks 1.4.1.0
+
+  [PYTHON MACROS]
+  * totalEfficiency: added macro {{py:xvm.dmgKindColor}}
+  * hitLog: added macro {{vehiclename}}
+  * damageLog: added macro {{vehiclename}}
+  * damageLog: the "wheel" parameter has been added to the "comp-name" section
+  * damageLog: updated list of available macros with their description:
+      (/res_mods/mods/shared_resources/xvm/docs/py_macros_ru.txt)
+
+  [HIT LOG]
+  * hitlog settings was completely reworked;
+      see "hitLog.xc" file.
+  * added sections:
+      "battleLabels"/"hitLogBackground"
+      "battleLabelsTemplates"/"hitLogBackground"
+      "colors"/"dmg_ratio_player"
+  * renamed sections:
+      "battleLabels"/"hitlogHeader" > "battleLabels"/"hitLogHeader"
+      "battleLabels"/"hitlogBody" > "battleLabels"/"hitLogBody"
+      "battleLabelsTemplates"/"hitlogHeader" > "battleLabelsTemplates"/"hitLogHeader"
+      "battleLabelsTemplates"/"hitlogBody" > "battleLabelsTemplates"/"hitLogBody"
+  * updated sections:
+      "battleLabelsTemplates"/"avgDamage"
+      "battleLabelsTemplates"/"mainGun"
+
+  [DAMAGE LOG]
+  * added parameter:
+      "damageLog"/"comp-name"/"wheel"
+  * updated sections:
+      "battleLabelsTemplates"/"damageLog"
+      "battleLabelsTemplates"/"damageLogBackground"
+      "battleLabelsTemplates"/"lastHit"
+
+  [PLAYERS PANEL]
+  * renamed option in the sections "playersPanel"/"short", "medium", "medium2", "large":
+      "vehicleIconXOffsetLeft"   -> "vehicleIconOffsetXLeft"
+      "vehicleIconXOffsetRight"  -> "vehicleIconOffsetXRight"
+      "vehicleLevelXOffsetLeft"  -> "vehicleLevelOffsetXLeft"
+      "vehicleLevelXOffsetRight" -> "vehicleLevelOffsetXRight"
+      "fragsXOffsetLeft"         -> "fragsOffsetXLeft"
+      "fragsXOffsetRight"        -> "fragsOffsetXRight"
+      "rankBadgeXOffsetLeft"     -> "rankBadgeOffsetXLeft"
+      "rankBadgeXOffsetRight"    -> "rankBadgeOffsetXRight"
+      "nickXOffsetLeft"          -> "nickOffsetXLeft"
+      "nickXOffsetRight"         -> "nickOffsetXRight"
+      "vehicleXOffsetLeft"       -> "vehicleOffsetXLeft"
+      "vehicleXOffsetRight"      -> "vehicleOffsetXRight"
+
+  [HANGAR]
+  * added option:
+      "hangar"/"enableCrystalLocker" - enable locker for bonds
+
+  [KNOWN ISSUES]
+  * disabled options:
+      "login"/"saveLastServer" - save last server
+      "hangar"/"hidePricesInTechTree" - hide price button in tech tree
+      "hangar"/"masteryMarkInTechTree" - show mastery mark in tech tree
+    Will be reprocessed in future releases.
+
+XVM-7.8.4
   [GENERAL]
   * World of Tanks 1.4.0.2
 
@@ -29,7 +101,7 @@ XVM-7.8.0:
   * added sorting on "battles", "-battles"
 
   [PYTHON MACROS]
-  * damageLog: changed the names of the parameters in the "vtype" and "c: vtype" sections
+  * damageLog: changed the names of the parameters in the "vtype" and "c:vtype" sections
   * totalEfficiency: added macro {{py:xvm.dmgAlly}}
   
 XVM-7.7.9:
@@ -55,6 +127,8 @@ XVM-7.7.8:
       {{v.type_l}} - vehicle type (text substitution from config)
       {{v.type_key}} - vehicle class (text substitution from locale)
       {{v.rent}} - 'rent' for rented, empty for normal vehicle
+
+  [PYTHON MACROS]
   * damageLog: log scrolling added
 
   [OTHER]
@@ -141,6 +215,7 @@ XVM-7.7.0:
   * XFW.Native was updated to 1.3.1-65
       - implented support for subscribing on some D3D9 and DXGI functions
   * actionscript files now stores in "com.modxvm.xfw.actionscript" package
+
   [BATTLE]
   * added options:
       "battle"/"battleHint"/"hideTrajectoryView" - hide the tips aiming mode changing in strategic mode

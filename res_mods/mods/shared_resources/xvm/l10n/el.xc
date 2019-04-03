@@ -23,6 +23,7 @@
     "ramming": "επιγόμωση",
     "world_collision": "πτώση",
     "death_zone": "ζώνη θανάτου",
+    "pillbox": "",
     "Hits": "Χτυπήματα",
     "Total": "Σύνολο",
     "Last": "Τελευταίο",

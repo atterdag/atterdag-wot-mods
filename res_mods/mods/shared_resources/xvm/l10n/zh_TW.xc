@@ -23,6 +23,7 @@
     "ramming": "撞擊",
     "world_collision": "墜落",
     "death_zone": "",
+    "pillbox": "",
     "Hits": "擊中數",
     "Total": "總傷害",
     "Last": "前次傷害",

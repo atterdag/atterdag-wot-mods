@@ -23,6 +23,7 @@
     "ramming": "",
     "world_collision": "",
     "death_zone": "",
+    "pillbox": "",
     "Hits": "",
     "Total": "",
     "Last": "",

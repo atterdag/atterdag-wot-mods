@@ -23,6 +23,7 @@
     "ramming": "batendo",
     "world_collision": "queda",
     "death_zone": "",
+    "pillbox": "",
     "Hits": "Acertos",
     "Total": "Total",
     "Last": "Último",

@@ -23,6 +23,7 @@
     "ramming": "rammen",
     "world_collision": "vallen",
     "death_zone": "dood gebied",
+    "pillbox": "",
     "Hits": "Treffers",
     "Total": "Totaal",
     "Last": "Laatste",

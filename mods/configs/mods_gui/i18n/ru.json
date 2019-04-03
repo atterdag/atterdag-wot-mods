@@ -2,11 +2,8 @@
     "gui_buttonApply": "Принять",
     "gui_buttonCancel": "Отмена",
     "gui_buttonOK": "Ok",
-    "gui_description": "Вкл. | Выкл. и настроить моды",
     "gui_enableButtonTooltip": "{HEADER}Настройки модов{/HEADER}{BODY}Вкл. | Выкл. и настроить моды{/BODY}",
-    "gui_main_text": "Список модификаций",
-    "gui_main_tooltip": "Список модификаций",
-    "gui_name": "Настройки модов",
+    "gui_name": "МОДЫ - Настройки",
     "gui_windowTitle": "Настройки модов",
-    "version": 215
+    "version": 219
 }

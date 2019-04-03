@@ -23,6 +23,7 @@
     "ramming": "kollision",
     "world_collision": "fall",
     "death_zone": "dödszon",
+    "pillbox": "",
     "Hits": "Träffar",
     "Total": "Totalt",
     "Last": "Senaste",

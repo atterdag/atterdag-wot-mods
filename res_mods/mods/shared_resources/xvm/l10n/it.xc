@@ -23,6 +23,7 @@
     "ramming": "speronato",
     "world_collision": "caduto",
     "death_zone": "zona morta",
+    "pillbox": "",
     "Hits": "Colpi",
     "Total": "Totale",
     "Last": "Ultimo",

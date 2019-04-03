@@ -23,6 +23,7 @@
     "ramming": "rammimine",
     "world_collision": "kukkumine",
     "death_zone": "surmatsoon",
+    "pillbox": "",
     "Hits": "Tabamusi",
     "Total": "Kokku",
     "Last": "Viimane",

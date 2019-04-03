@@ -23,6 +23,7 @@
     "ramming": "충각",
     "world_collision": "추락",
     "death_zone": "death zone",
+    "pillbox": "",
     "Hits": "공격",
     "Total": "전체",
     "Last": "최근",

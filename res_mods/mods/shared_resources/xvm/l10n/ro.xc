@@ -23,6 +23,7 @@
     "ramming": "Ciocnire",
     "world_collision": "cădere",
     "death_zone": "zona mortala",
+    "pillbox": "",
     "Hits": "Lovituri",
     "Total": "Total",
     "Last": "Ultima",

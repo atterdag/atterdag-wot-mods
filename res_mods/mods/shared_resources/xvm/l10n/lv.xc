@@ -23,6 +23,7 @@
     "ramming": "taranēts",
     "world_collision": "kritiens",
     "death_zone": "nāves zona",
+    "pillbox": "",
     "Hits": "Cauršauts",
     "Total": "Kopā",
     "Last": "Pēdējais",

@@ -23,6 +23,7 @@
     "ramming": "Rammen",
     "world_collision": "Aufprall",
     "death_zone": "Todeszone",
+    "pillbox": "",
     "Hits": "Treffer",
     "Total": "Gesamt",
     "Last": "Zuletzt",

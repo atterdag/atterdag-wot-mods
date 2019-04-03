@@ -23,6 +23,7 @@
     "ramming": "судар",
     "world_collision": "пад",
     "death_zone": "мртва зона",
+    "pillbox": "",
     "Hits": "Погодака",
     "Total": "Укупно",
     "Last": "Последњи",

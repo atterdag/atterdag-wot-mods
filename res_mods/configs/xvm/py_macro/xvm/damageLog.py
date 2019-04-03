@@ -29,7 +29,7 @@ from xvm_main.python.logger import *
 from xvm_main.python.stats import _stat
 import xvm_main.python.config as config
 import xvm_main.python.userprefs as userprefs
-from xvm_battle.python.battle import isBattleTypeSupported
+import xvm_battle.python.battle as battle
 
 import parser_addon
 
@@ -248,7 +248,8 @@ class Data(object):
                      'stun-duration': None,
                      'shells_stunning': False,
                      'critDevice': 'no-critical',
-                     'hitTime': 0
+                     'hitTime': 0,
+                     'attackerVehicleName': ''
                      }
 
     def updateData(self):
@@ -272,6 +273,7 @@ class Data(object):
                 vehicleType = attacker['vehicleType']
                 if vehicleType:
                     _type = vehicleType.type
+                    self.data['attackerVehicleName'] = vehicleType.name.replace(':', '-', 1) if vehicleType.name else ''
                     self.data['attackerVehicleType'] = list(_type.tags.intersection(VEHICLE_CLASSES))[0]
                     self.data['shortUserString'] = _type.shortUserString
                     self.data['level'] = vehicleType.level
@@ -282,6 +284,7 @@ class Data(object):
                         self.data['diff-masses'] = None
                 else:
                     self.data['attackerVehicleType'] = 'not_vehicle'
+                    self.data['attackerVehicleName'] = ''
                     self.data['shortUserString'] = None
                     self.data['level'] = None
                     self.data['nation'] = None
@@ -318,6 +321,7 @@ class Data(object):
         else:
             self.data['teamDmg'] = 'unknown'
             self.data['attackerVehicleType'] = 'not_vehicle'
+            self.data['attackerVehicleName'] = ''
             self.data['shortUserString'] = ''
             self.data['name'] = ''
             self.data['clanAbbrev'] = ''
@@ -407,7 +411,11 @@ class Data(object):
         if wheelsConfig:
             maxComponentIdx += wheelsConfig.getWheelsCount()
         maxHitEffectCode, decodedPoints, maxDamagedComponent = DamageFromShotDecoder.decodeHitPoints(points, vehicle.appearance.collisions, maxComponentIdx)
-        self.data['compName'] = decodedPoints[0].componentName if decodedPoints else 'unknown'
+        compName = decodedPoints[0].componentName
+        if decodedPoints:
+            self.data['compName'] = compName if compName[0] != 'W' else 'wheel'
+        else:
+            self.data['compName'] = 'unknown'
 
         # self.data['criticalHit'] = (maxHitEffectCode == 5)
         if not self.data['isDamage']:
@@ -486,7 +494,7 @@ class Data(object):
             self.data['attackReasonID'] = 25
 
         self.data['isDamage'] = (self.data['damage'] > 0)
-        self.data['isAlive'] = (newHealth > 0) and bool(vehicle.isCrewActive)
+        self.data['isAlive'] = vehicle.isAlive()
         self.data['hitEffect'] = HIT_EFFECT_CODES[4]
         if self.data['attackReasonID'] != 0:
             self.data['costShell'] = 'unknown'
@@ -561,7 +569,8 @@ def updateValueMacros(section, value):
                   'nation': value.get('nation', None),
                   'my-blownup': 'blownup' if value['blownup'] else None,
                   'type-shell-key': value['shellKind'],
-                  'stun-duration': value.get('stun-duration', None)
+                  'stun-duration': value.get('stun-duration', None),
+                  'vehiclename': value.get('attackerVehicleName', None)
                   }
 
     macros.update({'c:team-dmg': conf['c_teamDmg'][value['teamDmg']],
@@ -642,14 +651,14 @@ class DamageLog(_Base):
         self.dataLog = {}
         self.scrollList = []
         if config.get(self.S_MOVE_IN_BATTLE):
-            _data = userprefs.get('DamageLog/dlog', {'x': config.get(self.S_X), 'y': config.get(self.S_Y)})
+            _data = userprefs.get('damageLog/log', {'x': config.get(self.S_X), 'y': config.get(self.S_Y)})
             if section == SECTION_LOG:
-                as_callback("dLog_mouseDown", self.mouse_down)
-                as_callback("dLog_mouseUp", self.mouse_up)
-                as_callback("dLog_mouseMove", self.mouse_move)
+                as_callback("damageLog_mouseDown", self.mouse_down)
+                as_callback("damageLog_mouseUp", self.mouse_up)
+                as_callback("damageLog_mouseMove", self.mouse_move)
         else:
             _data = {'x': config.get(self.S_X), 'y': config.get(self.S_Y)}
-        as_callback("dLog_mouseWheel", self.mouse_wheel)
+        as_callback("damageLog_mouseWheel", self.mouse_wheel)
         self.x = _data['x']
         self.y = _data['y']
         self.section = section
@@ -664,7 +673,7 @@ class DamageLog(_Base):
         self.callEvent = True
         self.dictVehicle.clear()
         if (None not in [self.x, self.y]) and config.get(self.S_MOVE_IN_BATTLE) and section == SECTION_LOG:
-            userprefs.set('DamageLog/dLog', {'x': self.x, 'y': self.y})
+            userprefs.set('damageLog/log', {'x': self.x, 'y': self.y})
 
     def mouse_move(self, _data):
         self._mouse_move(_data, 'ON_HIT')
@@ -760,7 +769,7 @@ class LastHit(_Base):
         self.S_FORMAT_LAST_HIT = section + FORMAT_LAST_HIT
         self.S_TIME_DISPLAY_LAST_HIT = section + TIME_DISPLAY_LAST_HIT
         if config.get(self.S_MOVE_IN_BATTLE):
-            _data = userprefs.get('DamageLog/lastHit', {'x': config.get(self.S_X), 'y': config.get(self.S_Y)})
+            _data = userprefs.get('damageLog/lastHit', {'x': config.get(self.S_X), 'y': config.get(self.S_Y)})
             as_callback("lastHit_mouseDown", self.mouse_down)
             as_callback("lastHit_mouseUp", self.mouse_up)
             as_callback("lastHit_mouseMove", self.mouse_move)
@@ -776,7 +785,7 @@ class LastHit(_Base):
         if (self.timerLastHit is not None) and self.timerLastHit.isStarted:
             self.timerLastHit.stop()
         if (None not in [self.x, self.y]) and config.get(self.S_MOVE_IN_BATTLE):
-            userprefs.set('DamageLog/lastHit', {'x': self.x, 'y': self.y})
+            userprefs.set('damageLog/lastHit', {'x': self.x, 'y': self.y})
 
     def mouse_move(self, _data):
         self._mouse_move(_data, 'ON_LAST_HIT')
@@ -851,7 +860,7 @@ _lastHit = LastHit(SECTION_LASTHIT)
 @registerEvent(PlayerAvatar, 'onBecomePlayer')
 def _PlayerAvatar_onBecomePlayer(self):
     global isShowDamageLog
-    isShowDamageLog = config.get(DAMAGE_LOG_ENABLED) and isBattleTypeSupported
+    isShowDamageLog = config.get(DAMAGE_LOG_ENABLED) and battle.isBattleTypeSupported
 
 @overrideMethod(DamageLogPanel, '_addToTopLog')
 def DamageLogPanel_addToTopLog(base, self, value, actionTypeImg, vehicleTypeImg, vehicleName, shellTypeStr, shellTypeBG):
@@ -938,7 +947,7 @@ def updateVehicleHealth(self, vehicleID, health, deathReasonID, isCrewActive, is
 def Vehicle_onEnterWorld(self, prereqs):
     if self.isPlayerVehicle:
         global isShowDamageLog
-        isShowDamageLog = config.get(DAMAGE_LOG_ENABLED) and isBattleTypeSupported
+        isShowDamageLog = config.get(DAMAGE_LOG_ENABLED) and battle.isBattleTypeSupported
         if isShowDamageLog:
             global on_fire, damageLogConfig, autoReloadConfig, chooseRating
             scale = config.networkServicesSettings.scale
@@ -954,7 +963,7 @@ def Vehicle_onEnterWorld(self, prereqs):
             on_fire = 0
             data.data['oldHealth'] = self.health
             data.data['maxHealth'] = self.health
-            data.data['isAlive'] = (self.health > 0) and bool(self.isCrewActive)
+            data.data['isAlive'] = self.isAlive()
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
@@ -1031,13 +1040,20 @@ def dLog():
     return '\n'.join(_logAlt.listLog) if isDownAlt else '\n'.join(_log.listLog)
 
 
-def dLogBackground():
+def dLog_bg():
     return '\n'.join(_logAltBackground.listLog) if isDownAlt else '\n'.join(_logBackground.listLog)
 
 
 def dLog_shadow(setting):
     return _logAlt.shadow.get(setting, None) if isDownAlt else _log.shadow.get(setting, None)
 
+
+def dLog_x():
+    return _log.x
+
+
+def dLog_y():
+    return _log.y
 
 def lastHit():
     return _lastHit.strLastHit
@@ -1047,6 +1063,13 @@ def lastHit_shadow(setting):
     return _lastHit.shadow.get(setting, None)
 
 
+def lastHit_x():
+    return _lastHit.x
+
+
+def lastHit_y():
+    return _lastHit.y
+
+
 def fire():
     return on_fire
-

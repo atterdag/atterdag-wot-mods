@@ -23,6 +23,7 @@
     "ramming": "náraz",
     "world_collision": "pádom",
     "death_zone": "",
+    "pillbox": "",
     "Hits": "Zásahov",
     "Total": "Celkom",
     "Last": "Posledný",

@@ -1,0 +1,46 @@
+
+Awfultanker ServerMarker
+
+Options in the config file (AT_ServerMarker_config.json):
+
+"texture" 
+            Sets the texture for the gun marker. These files are located in the "markers"
+            directory as ".dds" files. Templates are included for creating new markers in 
+            the Paint.net image editor. 
+            
+"textureScaleArcade"
+"textureScaleSniper"
+            Sets the size of the gun marker textures. 1.0 is unscaled.
+            
+"markerScaleServer":
+"markerScaleClient":
+            Accepted values: 0.1-2.0
+            Sets the size of the gun marker. 1.0 is unscaled.
+            The client marker minimum and maximum size is unchanged.
+
+"preventTeamDamage"
+            Helps prevent shooting an ally if the ally is directly in front of the client
+            gun marker.
+            
+"showOnTop"
+            Position the server gun marker on top of the aim.
+            
+"showUnsupported"
+            Display build in server marker when using an unsupported control mode (such 
+            as artillery).
+
+"minimumSizeLimit"
+            Will limit the minimum size similarly to the client gun marker.
+            
+Default configuration file (false means off, true means on):
+{
+    "texture": "pentagon_blue64.dds",
+    "scaleArcade": 0.75,
+    "scaleSniper": 1.0,
+    "markerScaleServer": 0.8
+    "markerScaleClient": 1.0
+    "preventTeamDamage": false,
+    "showOnTop": false,
+    "showUnsupported": true,
+    "minimumSizeLimit": true
+}

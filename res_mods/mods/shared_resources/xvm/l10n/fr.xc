@@ -23,6 +23,7 @@
     "ramming": "collision",
     "world_collision": "chute",
     "death_zone": "zone de destruction",
+    "pillbox": "",
     "Hits": "Tirs",
     "Total": "Total",
     "Last": "Dernier",

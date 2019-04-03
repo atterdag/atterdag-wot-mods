@@ -23,6 +23,7 @@
     "ramming": "ტარანი",
     "world_collision": "დაცემა",
     "death_zone": "death zone",
+    "pillbox": "",
     "Hits": "გარტყმები",
     "Total": "ჯამი",
     "Last": "ბოლო",

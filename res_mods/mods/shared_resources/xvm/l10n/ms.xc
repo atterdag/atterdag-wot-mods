@@ -23,6 +23,7 @@
     "ramming": "tempuhan",
     "world_collision": "tumbang",
     "death_zone": "",
+    "pillbox": "",
     "Hits": "Kena",
     "Total": "Jumlah",
     "Last": "Akhir",

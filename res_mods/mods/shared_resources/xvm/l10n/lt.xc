@@ -23,6 +23,7 @@
     "ramming": "taranavimas",
     "world_collision": "kritimas",
     "death_zone": "mirties zona",
+    "pillbox": "",
     "Hits": "Pataikymai",
     "Total": "Viso",
     "Last": "Paskutinis",

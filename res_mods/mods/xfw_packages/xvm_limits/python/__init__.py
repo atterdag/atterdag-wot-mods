@@ -6,6 +6,7 @@
 class XVM_LIMITS_COMMAND(object):
     SET_GOLD_LOCK_STATUS = "xvm_limits.set_gold_lock_status"
     SET_FREEXP_LOCK_STATUS = "xvm_limits.set_freexp_lock_status"
+    SET_CRYSTAL_LOCK_STATUS = "xvm_limits.set_crystal_lock_status"
 
 
 #####################################################################
@@ -20,6 +21,7 @@ from gui.shared import g_eventBus, tooltips
 from gui.shared.gui_items import GUI_ITEM_TYPE
 from gui.shared.money import Currency
 from gui.shared.utils.requesters.StatsRequester import StatsRequester
+from gui.Scaleform.daapi.view.lobby.techtree.settings import UNKNOWN_VEHICLE_LEVEL
 from gui.Scaleform.daapi.view.lobby.techtree.techtree_page import TechTree
 from gui.Scaleform.daapi.view.lobby.techtree.research_page import Research
 from gui.Scaleform.daapi.view.lobby.hangar.TechnicalMaintenance import TechnicalMaintenance
@@ -44,9 +46,11 @@ import xvm_main.python.config as config
 
 cfg_hangar_enableGoldLocker = False
 cfg_hangar_enableFreeXpLocker = False
+cfg_hangar_enableCrystalLocker = False
 
 gold_enable = True
 freeXP_enable = True
+crystal_enable = True
 TechTree_handler = None
 Research_handler = None
 TechnicalMaintenance_handler = None
@@ -69,8 +73,10 @@ BigWorld.callback(0, start)
 def onConfigLoaded(self, e=None):
     global cfg_hangar_enableGoldLocker
     global cfg_hangar_enableFreeXpLocker
+    global cfg_hangar_enableCrystalLocker
     cfg_hangar_enableGoldLocker = config.get('hangar/enableGoldLocker', False) == True
     cfg_hangar_enableFreeXpLocker = config.get('hangar/enableFreeXpLocker', False) == True
+    cfg_hangar_enableCrystalLocker = config.get('hangar/enableCrystalLocker', False) == True
 
 g_eventBus.addListener(XVM_EVENT.CONFIG_LOADED, onConfigLoaded)
 
@@ -104,12 +110,18 @@ def onXfwCommand(cmd, *args):
             handlersInvalidate("onClientChanged({'stats': 'freeXP'})", PersonalCase_handlers)
             handlersInvalidate('_ExchangeFreeToTankmanXpWindow__onFreeXpChanged()', ExchangeFreeToTankmanXpWindow_handlers)
             return (None, True)
+        elif cmd == XVM_LIMITS_COMMAND.SET_CRYSTAL_LOCK_STATUS:
+            global crystal_enable
+            crystal_enable = not args[0]
+            handlersInvalidate('_update()', Shop_handler)
+            handlersInvalidate("onClientChanged({'stats': 'crystal'})", PersonalCase_handlers)
+            return (None, True)
     except Exception, ex:
         err(traceback.format_exc())
         return (None, True)
     return (None, False)
 
-# run function that updates gold/freeXP status in active handlers
+# run function that updates gold/freeXP/crystal status in active handlers
 def handlersInvalidate(function, *handlers):
     try:
         handlers_arr = []
@@ -128,7 +140,7 @@ def handlersInvalidate(function, *handlers):
 #####################################################################
 # handlers
 
-# enable or disable active usage of gold (does not affect auto-refill ammo/equip)
+# enable or disable active usage of gold
 @overrideMethod(ingame_shop, 'canBuyGoldForItemThroughWeb')
 def canBuyGoldForItemThroughWeb(base, itemID, *args, **kwargs):
     if not cfg_hangar_enableGoldLocker or gold_enable:
@@ -141,6 +153,7 @@ def canBuyGoldForVehicleThroughWeb(base, vehicle, *args, **kwargs):
         return base(vehicle, *args, **kwargs)
     return False
 
+# enable or disable usage of gold
 @overrideMethod(StatsRequester, 'gold')
 def StatsRequester_gold(base, self):
     if not cfg_hangar_enableGoldLocker or gold_enable:
@@ -154,9 +167,16 @@ def StatsRequester_freeXP(base, self):
         return max(self.actualFreeXP, 0)
     return 0
 
+# enable or disable usage of bond
+@overrideMethod(StatsRequester, 'crystal')
+def StatsRequester_crystal(base, self):
+    if not cfg_hangar_enableCrystalLocker or crystal_enable:
+        return max(self.actualCrystal, 0)
+    return 0
+
 
 ##############################################################
-# handlers of windows that use gold / freeXP
+# handlers of windows that use gold/freeXP/crystal
 
 @registerEvent(TechTree, '_populate')
 def TechTree_populate(self, *args, **kwargs):
@@ -255,11 +275,12 @@ def MainView_dispose(self, *args, **kwargs):
     MainView_handler = None
 
 @overrideMethod(tooltips, 'getUnlockPrice')
-def tooltips_getUnlockPrice(base, compactDescr, parentCD = None):
-    isAvailable, cost, need = base(compactDescr, parentCD)
+@dependency.replace_none_kwargs(itemsCache=IItemsCache)
+def getUnlockPrice(base, compactDescr, parentCD = None, vehicleLevel = UNKNOWN_VEHICLE_LEVEL, itemsCache = None):
+    isAvailable, cost, need, defCost, discount = base(compactDescr, parentCD, vehicleLevel)
     if cfg_hangar_enableFreeXpLocker and not freeXP_enable:
-        need += dependency.instance(IItemsCache).items.stats.actualFreeXP
-    return (isAvailable, cost, need)
+        need += itemsCache.items.stats.actualFreeXP
+    return (isAvailable, cost, need, defCost, discount)
 
 # "reimport"
 import gui.shared.tooltips.module as tooltips_module
@@ -268,7 +289,8 @@ tooltips_module.getUnlockPrice = tooltips.getUnlockPrice
 tooltips_vehicle.getUnlockPrice = tooltips.getUnlockPrice
 
 # force call invalidateFreeXP to update actualFreeXP on vehicle change
-@overrideMethod(Research, 'onResearchItemsDrawn')
-def Research_onResearchItemsDrawn(base, self):
-    base(self)
-    self.invalidateFreeXP()
+# TODO:1.4.1
+#@overrideMethod(Research, 'onResearchItemsDrawn')
+#def Research_onResearchItemsDrawn(base, self):
+#    base(self)
+#    self.invalidateFreeXP()

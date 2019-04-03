@@ -23,6 +23,7 @@
     "ramming": "sammenstød",
     "world_collision": "anslag",
     "death_zone": "dødszone",
+    "pillbox": "",
     "Hits": "Træffere",
     "Total": "I alt",
     "Last": "Sidste",

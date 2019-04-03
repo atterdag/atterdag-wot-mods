@@ -23,6 +23,7 @@
     "ramming": "Menabrak",
     "world_collision": "jatuh",
     "death_zone": "zona kematian",
+    "pillbox": "",
     "Hits": "Tembakan",
     "Total": "Total",
     "Last": "Lalu",

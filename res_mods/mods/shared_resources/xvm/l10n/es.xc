@@ -23,6 +23,7 @@
     "ramming": "embestida",
     "world_collision": "cayendo",
     "death_zone": "zona muerta",
+    "pillbox": "",
     "Hits": "Impactos",
     "Total": "Daño",
     "Last": "Último",

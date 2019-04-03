@@ -1,4 +1,74 @@
-﻿XVM-7.8.4:
+﻿XVM-7.8.6:
+  [ОБЩЕЕ]
+  * World of Tanks 1.4.1.1
+
+  [АНГАР]
+  * восстановлена функциональность опции:
+      "login"/"saveLastServer" - сохранять последний сервер
+      "hangar"/"hidePricesInTechTree" - прятать кнопку с ценой в дереве исследований
+      "hangar"/"masteryMarkInTechTree" - показывать знак мастерства в дереве исследований
+
+XVM-7.8.5:
+  [ОБЩЕЕ]
+  * World of Tanks 1.4.1.0
+
+  [МАКРОСЫ НА PYTHON]
+  * totalEfficiency: добавлен макрос {{py:xvm.dmgKindColor}}
+  * hitLog: добавлен макрос {{vehiclename}}
+  * damageLog: добавлен макрос {{vehiclename}}
+  * damageLog: в секцию "comp-name" добавлен параметр "wheel"
+  * damageLog: обновлен перечень доступных макросов с их описанием:
+      (/res_mods/mods/shared_resources/xvm/docs/py_macros_ru.txt)
+
+  [ЛОГ НАНЕСЕННЫХ ПОВРЕЖДЕНИЙ]
+  * полностью переработаны настройки лога нанесенного урона;
+      смотрите файл "hitLog.xc"
+  * добавлены секции:
+      "battleLabels"/"hitLogBackground"
+      "battleLabelsTemplates"/"hitLogBackground"
+      "colors"/"dmg_ratio_player"
+  * переименованы секции:
+      "battleLabels"/"hitlogHeader" > "battleLabels"/"hitLogHeader"
+      "battleLabels"/"hitlogBody" > "battleLabels"/"hitLogBody"
+      "battleLabelsTemplates"/"hitlogHeader" > "battleLabelsTemplates"/"hitLogHeader"
+      "battleLabelsTemplates"/"hitlogBody" > "battleLabelsTemplates"/"hitLogBody"
+  * обновлены секции:
+      "battleLabelsTemplates"/"avgDamage"
+      "battleLabelsTemplates"/"mainGun"
+
+  [ЛОГ ПОЛУЧЕННЫХ ПОВРЕЖДЕНИЙ]
+  * обновлены секции:
+      "battleLabelsTemplates"/"damageLog"
+      "battleLabelsTemplates"/"damageLogBackground"
+      "battleLabelsTemplates"/"lastHit"
+
+  [ПАНЕЛИ ИГРОКОВ]
+  * переименованы опции в секциях "playersPanel"/"short", "medium", "medium2", "large":
+      "vehicleIconXOffsetLeft"   -> "vehicleIconOffsetXLeft"
+      "vehicleIconXOffsetRight"  -> "vehicleIconOffsetXRight"
+      "vehicleLevelXOffsetLeft"  -> "vehicleLevelOffsetXLeft"
+      "vehicleLevelXOffsetRight" -> "vehicleLevelOffsetXRight"
+      "fragsXOffsetLeft"         -> "fragsOffsetXLeft"
+      "fragsXOffsetRight"        -> "fragsOffsetXRight"
+      "rankBadgeXOffsetLeft"     -> "rankBadgeOffsetXLeft"
+      "rankBadgeXOffsetRight"    -> "rankBadgeOffsetXRight"
+      "nickXOffsetLeft"          -> "nickOffsetXLeft"
+      "nickXOffsetRight"         -> "nickOffsetXRight"
+      "vehicleXOffsetLeft"       -> "vehicleOffsetXLeft"
+      "vehicleXOffsetRight"      -> "vehicleOffsetXRight"
+
+  [АНГАР]
+  * добавлена опция:
+      "hangar"/"enableCrystalLocker" - включить замок для бонов
+
+  [ИЗВЕСТНЫЕ ПРОБЛЕМЫ]
+  * отключены опции:
+      "login"/"saveLastServer" - сохранять последний сервер
+      "hangar"/"hidePricesInTechTree" - прятать кнопку с ценой в дереве исследований
+      "hangar"/"masteryMarkInTechTree" - показывать знак мастерства в дереве исследований
+    Будут доработаны в будущих релизах.
+
+XVM-7.8.4:
   [ОБЩЕЕ]
   * World of Tanks 1.4.0.2
 
@@ -28,7 +98,7 @@ XVM-7.8.0:
   [КАРУСЕЛЬ]
   * добавлена сортировка по "battles", "-battles"
 
-  [МАКРОСЫ]
+  [МАКРОСЫ НА PYTHON]
   * damageLog: изменены названия параметров в секциях "vtype" и "c:vtype"
   * totalEfficiency: добавлен макрос {{py:xvm.dmgAlly}}
 
@@ -55,6 +125,8 @@ XVM-7.7.8:
       {{v.type_l}} - тип техники (текстовые подстановки из файлов перевода)
       {{v.type_key}} - название ключа таблицы типа танка (LT, MT, HT, TD, SPG)
       {{v.rent}} - 'rent' для арендной техники, пусто - для обычной
+
+  [МАКРОСЫ НА PYTHON]
   * damageLog: добавлена прокрутка лога
 
   [РАЗНОЕ]
@@ -81,7 +153,7 @@ XVM-7.7.5:
   * исправлены вылеты BF-3, BF-5
   * исправлено множество ошибок
 
-  [МАКРОСЫ]
+  [МАКРОСЫ НА PYTHON]
   * totalEfficiency: добавлены макросы {{py:xvm.numberAssistStun}}, {{py:xvm.numberAssistSpot}}, {{py:xvm.numberAssistTrack}}, {{py:xvm.numberAssistAndStuns}}, {{py:xvm.totalAssistAndStuns}}
 
 XVM-7.7.4:
@@ -103,7 +175,7 @@ XVM-7.7.2:
   [АНГАР]
   * исправлена возможность покупки премиум техники если активна опция "enableGoldLocker"
 
-  [МАКРОСЫ]
+  [МАКРОСЫ НА PYTHON]
   * totalEfficiency: исправлены некоторые ошибки
 
 XVM-7.7.1:
@@ -181,7 +253,7 @@ XVM-7.6.8:
   [БОЙ]
   * добавлено отображение дробной части кратности зума
 
-  [МАКРОСЫ]
+  [МАКРОСЫ НА PYTHON]
   * damageLog: исправлены некоторые ошибки
   * totalEfficiency: исправлены некоторые ошибки
 
@@ -980,7 +1052,7 @@ XVM-6.4.9.1:
   * исправлена ошибка, препятствующая корректной сборке установщика
 
 XVM-6.4.9:
-  [DAMAGE LOG]
+  [ЛОГ ПОЛУЧЕННЫХ ПОВРЕЖДЕНИЙ]
   * удален таймер перезарядки в виду новой политики "честной игры"
 
   [РАЗНОЕ]
@@ -1018,7 +1090,7 @@ XVM-6.4.7.1:
   * исправлена опция "crewMaxPerksCount"
 
 XVM-6.4.7:
-  [DAMAGE LOG]
+  [ЛОГ ПОЛУЧЕННЫХ ПОВРЕЖДЕНИЙ]
   * добавлен "damageLog", реализованный на py_macro
       Тема на форуме: http://www.koreanrandom.com/forum/topic/35169-damagelog/
   * добавлена новая секция "damageLog"

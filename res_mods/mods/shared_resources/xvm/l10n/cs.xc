@@ -23,6 +23,7 @@
     "ramming": "náraz",
     "world_collision": "pádem",
     "death_zone": "zakázaná zóna",
+    "pillbox": "",
     "Hits": "Zásahů",
     "Total": "Celkem",
     "Last": "Poslední",

@@ -23,6 +23,7 @@
     "ramming": "húc",
     "world_collision": "rơi",
     "death_zone": "vùng chết",
+    "pillbox": "",
     "Hits": "Trúng",
     "Total": "Tổng",
     "Last": "Cuối",

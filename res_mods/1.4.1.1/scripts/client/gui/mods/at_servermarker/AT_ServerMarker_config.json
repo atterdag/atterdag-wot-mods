@@ -1,0 +1,12 @@
+{
+    "texture": "pentagon_blue64.dds",
+    "textureScaleArcade": 0.65,
+    "textureScaleSniper": 0.80,
+    "markerScaleServer": 0.8,
+    "markerScaleClient": 1.0,
+    "hideClientMarkerReload": false,
+    "preventTeamDamage": false,
+    "showOnTop": false,
+    "showUnsupported": true,
+    "minimumSizeLimit": true
+}

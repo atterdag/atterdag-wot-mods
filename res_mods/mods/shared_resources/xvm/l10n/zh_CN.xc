@@ -23,6 +23,7 @@
     "ramming": "撞击",
     "world_collision": "坠毁",
     "death_zone": "死亡区域",
+    "pillbox": "",
     "Hits": "命中",
     "Total": "总共",
     "Last": "最后",

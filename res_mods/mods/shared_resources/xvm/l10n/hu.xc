@@ -23,6 +23,7 @@
     "ramming": "ütközés",
     "world_collision": "zuhanás",
     "death_zone": "halálos terület",
+    "pillbox": "",
     "Hits": "Találatok",
     "Total": "Összesen",
     "Last": "Utoljára",

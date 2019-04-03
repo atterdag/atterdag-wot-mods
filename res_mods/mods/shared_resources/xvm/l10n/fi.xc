@@ -23,6 +23,7 @@
     "ramming": "törmäys",
     "world_collision": "putoaminen",
     "death_zone": "kuolema vyöhyke",
+    "pillbox": "",
     "Hits": "Osumat",
     "Total": "Yhteensä",
     "Last": "Viimeisin",

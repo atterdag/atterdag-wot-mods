@@ -23,6 +23,7 @@
     "ramming": "çarpma",
     "world_collision": "düşme",
     "death_zone": "Ölüm bölgesi",
+    "pillbox": "",
     "Hits": "İsabetler",
     "Total": "Toplam",
     "Last": "Son",

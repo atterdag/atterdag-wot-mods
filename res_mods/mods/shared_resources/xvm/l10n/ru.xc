@@ -28,6 +28,7 @@
     "ramming": "таран",
     "world_collision": "падение",
     "death_zone": "death zone",
+    "pillbox": "Огневая точка {0}",
 
     "Hits": "Пробитий",
     "Total": "Всего",
@@ -80,6 +81,7 @@
     "turret": "башня",
     "hull": "корпус",
     "chassis": "шасси",
+    "wheel": "колесо",
 
     // BattleResults
     "Hit percent": "Процент попаданий",
@@ -214,6 +216,8 @@
     "lobby/header/gold_unlocked_tooltip": "Золото разблокировано",
     "lobby/header/freexp_locked_tooltip": "Свободный опыт заблокирован",
     "lobby/header/freexp_unlocked_tooltip": "Свободный опыт разблокирован",
+    "lobby/header/crystal_locked_tooltip": "Боны заблокированы",
+    "lobby/header/crystal_unlocked_tooltip": "Боны разблокированы",
 
     "lobby/crew/enable_prev_crew": "Автоматический возврат экипажа",
     "lobby/crew/enable_prev_crew_tooltip": "<b><font color='#FDF4CE'>{{l10n:lobby/crew/enable_prev_crew}}</font></b>\nАвтоматически вернуть экипаж, который в предыдущем\nбою был на данной машине",

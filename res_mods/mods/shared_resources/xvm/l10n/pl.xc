@@ -23,6 +23,7 @@
     "ramming": "taranowanie",
     "world_collision": "spadanie",
     "death_zone": "strefa śmierci",
+    "pillbox": "",
     "Hits": "Trafienia",
     "Total": "Razem",
     "Last": "Ostatnie",

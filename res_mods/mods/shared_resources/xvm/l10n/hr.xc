@@ -23,6 +23,7 @@
     "ramming": "sudar",
     "world_collision": "pad",
     "death_zone": "mrtva zona",
+    "pillbox": "",
     "Hits": "Pogoci",
     "Total": "Sve ukupno",
     "Last": "Posljednji",

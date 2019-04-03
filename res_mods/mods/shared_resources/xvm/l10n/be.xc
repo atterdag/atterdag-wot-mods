@@ -23,6 +23,7 @@
     "ramming": "таран",
     "world_collision": "падзенне",
     "death_zone": "мёртвая зона",
+    "pillbox": "",
     "Hits": "Траплянні",
     "Total": "Агулам",
     "Last": "Апошняе",

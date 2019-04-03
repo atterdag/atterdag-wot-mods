@@ -28,6 +28,7 @@
     "ramming": "ramming",
     "world_collision": "falling",
     "death_zone": "death zone",
+    "pillbox": "Pillboxes {0}",
 
     "Hits": "Hits",
     "Total": "Total",
@@ -80,6 +81,7 @@
     "turret": "turret",
     "hull": "hull",
     "chassis": "chassis",
+    "wheel": "wheel",
 
     // BattleResults
     "Hit percent": "Hit percent",
@@ -214,6 +216,8 @@
     "lobby/header/gold_unlocked_tooltip": "Gold is unlocked",
     "lobby/header/freexp_locked_tooltip": "Free XP is locked",
     "lobby/header/freexp_unlocked_tooltip": "Free XP is unlocked",
+    "lobby/header/crystal_locked_tooltip": "Bonds are locked",
+    "lobby/header/crystal_unlocked_tooltip": "Bonds are unlocked",
 
     "lobby/crew/enable_prev_crew": "Automatically return crew",
     "lobby/crew/enable_prev_crew_tooltip": "<b><font color='#FDF4CE'>{{l10n:lobby/crew/enable_prev_crew}}</font></b>\nAutomatically return the crew that fought\nin this vehicle in the previous battle",
