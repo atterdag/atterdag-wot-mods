@@ -1,4 +1,20 @@
-﻿XVM-7.8.6:
+﻿XVM-7.8.7:
+  [ОБЩЕЕ]
+  * World of Tanks 1.4.1.2
+
+  [АНГАР]
+  * добавлены опции:
+      "hangar"/"showRewardWindow" - показывать информационное окно с перечнем полученных наград за "Довольствие"
+      "tooltips"/"showXpToUnlockVeh" - отображение недостающего опыта для исследования техники
+
+  [МАКРОСЫ НА PYTHON]
+  * totalEfficiency: добавлена нормализация в макросы:
+      {{py:xvm.totalDamage(norm)}},
+      {{py:xvm.totalAssist(norm)}},
+      {{py:xvm.damagesSquad(norm)}},
+      {{py:xvm.totalDamagesSquad(norm)}}
+
+XVM-7.8.6:
   [ОБЩЕЕ]
   * World of Tanks 1.4.1.1
 

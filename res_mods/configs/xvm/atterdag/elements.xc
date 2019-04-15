@@ -6,20 +6,18 @@
  * TODO: doc
  *
  * commands:
- *   "$log": 1,  // команда $log используется для вывода значений в лог, число - уровень вложенности
- *   "$delay": 1,
- *   "$interval": 1,
- *   "$textFormat": {   // подстановка для формата текста
- *     //"$log": 1,             // тоже можно логгировать
- *     "size": 30,              // размер шрифта
- *     "font": "$TitleFont",    // шрифт пожирнее
- *     "align": "center"        // выравнивание
+ *   "$log": 1,              // команда $log используется для вывода значений в лог, число - уровень вложенности
+ *   "$delay": 1,            // запуск сниппета с задержкой, число - задержка в мсек
+ *   "$interval": 1,         // периодический запуск сниппета с интервалом, число - интервал в мсек
+ *   "$textFormat": {        // подстановка для формата текста
+ *     //"$log": 1,          // тоже можно логгировать
+ *     "size": 30,           // размер шрифта
+ *     "font": "$TitleFont", // шрифт пожирнее
+ *     "align": "center"     // выравнивание
  *   }
  *
  */
 {
-  // TODO: elements.
-  //
   // Interface elements.
   // Элементы интерфейса.
   "elements": [
@@ -88,17 +86,17 @@
     ┌─────────────┐
     │ epic_battle │
     └─────────────┘
-    "epicDeploymentMap"             - ?                                                      / ?
-    "epicDestroyTimersPanel"        - ?                                                      / ?
-    "epicInGameRank"                - ?                                                      / ?
-    "epicMissionsPanel"             - ?                                                      / ?
-    "epicOverviewMapScreen"         - ?                                                      / ?
-    "epicReinforcementPanel"        - ?                                                      / ?
-    "epicRespawnView"               - ?                                                      / ?
-    "epicSpectatorViewUI"           - ?                                                      / ?
-    "epicScorePanelUI"              - ?                                                      / ?
-    "recoveryPanel"                 - ?                                                      / ?
-    "superPlatoonPanel"             - ?                                                      / ?
+    "epicDeploymentMap"             - Миникарта                                              / Minimap
+    "epicDestroyTimersPanel"        - Таймер до уничтожения (по горячей клавише "J")         / Destroy timers (hot key "J")
+    "epicInGameRank"                - Панель полученного ранга                               / Rank received panel
+    "epicMissionsPanel"             - Панель текущей задачи в бою (захватите/защищайте зону) / The panel of the current task in battle (capture/defend point)
+    "epicOverviewMapScreen"         - Экран обзора миникарты (по горячей клавише "M")        / Minimap overview screen (hot key "M")
+    "epicReinforcementPanel"        - Панель подкрепления (количество возрождений техники)   / ReinforcementPanel (the number of revivals vehicle)
+    "epicRespawnView"               - Панель выбора зоны высадки (сектор A, B, С)            / Respawn zone selection panel (zone A, B, C)
+    "epicSpectatorViewUI"           - Панель вида в режиме зрителя                           / View panel in spectator mode
+    "epicScorePanelUI"              - Панель счета                                           / Score panel
+    "recoveryPanel"                 - Индикатор восстановления техники (зона обслуживания)   / Recovery indicator (resupply point)
+    "superPlatoonPanel"             - Панель взвода                                          / Platoon panel
     */
   ]
 }

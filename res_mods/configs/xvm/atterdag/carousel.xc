@@ -57,15 +57,15 @@
     "filters": {
       // false - hide filter.
       // false - скрыть фильтр.
-      "params":   { "enabled": true },  // main params        / основные параметры
-      "bonus":    { "enabled": true },  // x2 bonus           / x2 бонус
-      "favorite": { "enabled": true }   // favorite tanks     / основные танки
+      "params":   { "enabled": true }, // main params    / основные параметры
+      "bonus":    { "enabled": true }, // x2 bonus       / x2 бонус
+      "favorite": { "enabled": true }  // favorite tanks / основные танки
     },
     // Spacing between filters cells.
     // Отступ между ячейками фильтров.
     "filtersPadding": {
-      "horizontal": 11,   // по горизонтали
-      "vertical": 13      // по вертикали
+      "horizontal": 11, // по горизонтали
+      "vertical": 13    // по вертикали
     },
     // Order of nations.
     // Порядок наций.
