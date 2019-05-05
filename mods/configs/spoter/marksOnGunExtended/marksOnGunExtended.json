@@ -62,14 +62,14 @@
     "font": "$IMELanguageBar",
     "panel": {
         "visible": true,
-        "drag": true,
-        "height": 50,
         "width": 163,
-        "alignY": "bottom",
+        "drag": true,
         "alignX": "left",
         "y": -580.0,
         "x": 0.0,
-        "border": true
+        "border": true,
+        "alignY": "bottom",
+        "height": 50
     },
     "panelSize": {
         "heightNormal": 50,
@@ -80,16 +80,17 @@
     "shadow": true,
     "shadowText": {
         "distance": 0,
-        "strength": 1,
         "blurX": 1,
+        "strength": 1,
+        "angle": 0,
         "blurY": 1,
         "color": 0,
         "alpha": 1,
-        "angle": 0,
         "quality": 1
     },
     "showInBattle": true,
     "showInBattleHalfPercents": false,
+    "showInHangar": true,
     "showInReplay": true,
     "showInStatistic": true,
     "showInTechTree": true,
@@ -97,5 +98,5 @@
     "showInTechTreeMarkOfGunPercentFirst": true,
     "unknownColor": 16,
     "upColor": 18,
-    "version": 604
+    "version": 701
 }

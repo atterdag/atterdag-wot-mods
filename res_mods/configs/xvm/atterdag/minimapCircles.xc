@@ -61,13 +61,11 @@
     "shell":     { "enabled": true, "alpha": 55, "color": "0xFF6666", "thickness": 0.5 },
     // Special circles dependent on vehicle type.
     // Many configuration lines for the same vehicle make many circles.
-    // See other vehicle types at (replace : symbol with -):
-    // https://bitbucket.org/XVM/xvm/src/default/src/xpm/xvm_main/vehinfo_short.py
+    // See other vehicle types in file: vehicleNames.xc
     // ------------------------------------------------------------------------------------------------
     // Специальные круги, зависящие от модели техники.
     // Несколько строк для одной техники делают несколько кругов.
-    // Названия танков для дополнения брать по ссылке (символ : заменяется -):
-    // https://bitbucket.org/XVM/xvm/src/default/src/xpm/xvm_main/vehinfo_short.py
+    // Названия танков для дополнения брать в файле: vehicleNames.xc
     "special": [
       // Example: Artillery gun fire range circle.
       // Пример: Круг дальности стрельбы арты.
