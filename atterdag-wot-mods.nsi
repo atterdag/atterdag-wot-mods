@@ -14,7 +14,7 @@
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 5
 !define VERSIONPATCH 0
-!define VERSIONBUILD 0
+!define VERSIONBUILD 1
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "https://github.com/atterdag/atterdag-wot-mods/issues"   # "Support Information" link
@@ -679,6 +679,7 @@ section "uninstall"
 	Delete "$INSTDIR\res_mods\configs\xvm\sirmax\img\marksOnGun\0.png"
 	Delete "$INSTDIR\res_mods\configs\xvm\sirmax\img\marksOnGun\-.png"
 	Delete "$INSTDIR\res_mods\configs\xvm\sirmax\img\icons\deer.png"
+	Delete "$INSTDIR\res_mods\configs\xvm\sirmax\img\icons\.png"
 	Delete "$INSTDIR\res_mods\configs\xvm\sirmax\img\_squad.png"
 	Delete "$INSTDIR\res_mods\configs\xvm\sirmax\img\_enemy-alive.png"
 	Delete "$INSTDIR\res_mods\configs\xvm\sirmax\img\_empty.png"
