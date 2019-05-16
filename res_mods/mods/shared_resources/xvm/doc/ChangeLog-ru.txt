@@ -1,4 +1,20 @@
-﻿XVM-7.9.0:
+﻿XVM-7.9.2:
+  [ОБЩЕЕ]
+  * World of Tanks 1.5.0.2
+
+  [МАКРОСЫ НА PYTHON]
+  * добавлены макросы {{py:mod(a, b)}}, {{py:strip(string, chars)}}, {{py:lstrip(string, chars)}}, {{py:rstrip(string, chars)}}
+  * damageLog: добавлена опция "groupDamageFromArtAndAirstrike"
+
+XVM-7.9.1:
+  [ОБЩЕЕ]
+  * World of Tanks 1.5.0.1
+
+  [АНГАР]
+  * добавлена секция:
+      "battleResults"/"bonusState" - настройка панели "Управляемый бонус к опыту"
+
+XVM-7.9.0:
   [ОБЩЕЕ]
   * World of Tanks 1.5.0.0
 

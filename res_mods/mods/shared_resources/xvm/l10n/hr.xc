@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Postotak pogodaka",
     "Damage (assisted / own)": "Šteta (asistirano / osobno)",
-    "BR_xpCrew": "posada",
+    "BR_xpCrew": "",
     "Friend": "Prijatelj",
     "Ignored": "Ignoriran",
     "unknown": "nepoznato",

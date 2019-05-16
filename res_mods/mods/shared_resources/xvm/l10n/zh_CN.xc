@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "命中率",
     "Damage (assisted / own)": "伤害 (助攻 / 主攻)",
-    "BR_xpCrew": "乘员",
+    "BR_xpCrew": "",
     "Friend": "好友",
     "Ignored": "忽略",
     "unknown": "未知",

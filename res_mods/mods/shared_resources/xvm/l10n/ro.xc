@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Lovituri",
     "Damage (assisted / own)": "Avarii (asistat / propriu)",
-    "BR_xpCrew": "echipaj",
+    "BR_xpCrew": "",
     "Friend": "Prieten",
     "Ignored": "Ignorat",
     "unknown": "necunosscut",

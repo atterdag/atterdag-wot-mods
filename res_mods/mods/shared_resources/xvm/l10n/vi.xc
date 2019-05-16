@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Tỉ lệ trúng",
     "Damage (assisted / own)": "Sát thương (hỗ trợ / bản thân)",
-    "BR_xpCrew": "kíp lái",
+    "BR_xpCrew": "",
     "Friend": "Bạn bè",
     "Ignored": "Bỏ qua",
     "unknown": "không rõ",

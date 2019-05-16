@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Trāpījumu procents",
     "Damage (assisted / own)": "Bojājumi (asistētie / mani)",
-    "BR_xpCrew": "apkalpe",
+    "BR_xpCrew": "",
     "Friend": "Draugs",
     "Ignored": "Ignorēts",
     "unknown": "nezināms",

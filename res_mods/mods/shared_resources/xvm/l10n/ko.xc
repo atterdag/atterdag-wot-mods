@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "명중률",
     "Damage (assisted / own)": "입힌 데미지 (어시스트 / 직접)",
-    "BR_xpCrew": "승무원",
+    "BR_xpCrew": "",
     "Friend": "친구",
     "Ignored": "무시",
     "unknown": "알수없음",

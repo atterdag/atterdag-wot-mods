@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Treffers percentage",
     "Damage (assisted / own)": "Schade (geassisteerd / eigen)",
-    "BR_xpCrew": "bemanning",
+    "BR_xpCrew": "",
     "Friend": "Vriend",
     "Ignored": "Genegeerd",
     "unknown": "onbekend",

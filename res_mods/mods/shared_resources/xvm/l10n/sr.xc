@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Провенат погодака",
     "Damage (assisted / own)": "Штета (асистенција / нанесена)",
-    "BR_xpCrew": "посада",
+    "BR_xpCrew": "",
     "Friend": "Пријатељ",
     "Ignored": "Игнорисан",
     "unknown": "непознат",

@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "გარტყმის პროცენტი",
     "Damage (assisted / own)": "ზიანი (თქვენი დახმარებით / საკუთარი)",
-    "BR_xpCrew": "ეკიპაჟი",
+    "BR_xpCrew": "",
     "Friend": "მეგობარი",
     "Ignored": "იგნორი",
     "unknown": "უცნობია",

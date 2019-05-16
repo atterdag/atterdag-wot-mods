@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Tabamus",
     "Damage (assisted / own)": "Kahju (abistatud / enda)",
-    "BR_xpCrew": "meeskond",
+    "BR_xpCrew": "",
     "Friend": "Sõber",
     "Ignored": "Ignoreeritud",
     "unknown": "tundmatu",

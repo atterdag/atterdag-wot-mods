@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Procent trafień",
     "Damage (assisted / own)": "Obrażenia (asysta / własne)",
-    "BR_xpCrew": "załoga",
+    "BR_xpCrew": "",
     "Friend": "Przyjaciel",
     "Ignored": "Ignorowany",
     "unknown": "nieznany",

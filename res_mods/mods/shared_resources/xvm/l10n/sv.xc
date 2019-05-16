@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Träffprocent",
     "Damage (assisted / own)": "Skada (assisterad / egen)",
-    "BR_xpCrew": "besättning",
+    "BR_xpCrew": "",
     "Friend": "Vän",
     "Ignored": "Ignorerad",
     "unknown": "okänd",

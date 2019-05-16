@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Eπιτυχία βολών τοις εκατό",
     "Damage (assisted / own)": "Βλάβη (assisted / own)",
-    "BR_xpCrew": "πλήρωμα",
+    "BR_xpCrew": "",
     "Friend": "Φίλος",
     "Ignored": "Αγνοημένος",
     "unknown": "αγνωστος",

@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Vuruş yüzdesi",
     "Damage (assisted / own)": "Hasar (yardım / bizzat)",
-    "BR_xpCrew": "Mürettebat",
+    "BR_xpCrew": "",
     "Friend": "Arkadaş",
     "Ignored": "Yoksayıldı",
     "unknown": "bilinmiyor",

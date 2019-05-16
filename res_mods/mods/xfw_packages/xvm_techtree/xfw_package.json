@@ -3,13 +3,13 @@
     "name": "XVM Techtree",
     "description": "XVM Techtree module",
 
-    "version": "7.9.0.9038",
+    "version": "7.9.2-dev.9067",
     "dependencies": ["com.modxvm.xvm"],
 
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
     
-    "wot_version_min": "1.5.0.0",
+    "wot_version_min": "1.5.0.2",
     "wot_version_exactmatch": false,
 
     "features": ["python"]

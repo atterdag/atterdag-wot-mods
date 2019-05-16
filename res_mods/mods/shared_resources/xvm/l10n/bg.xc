@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Процент попадения",
     "Damage (assisted / own)": "Щети (с ваша помощ / ваши)",
-    "BR_xpCrew": "екипаж",
+    "BR_xpCrew": "",
     "Friend": "Приятел",
     "Ignored": "Игнориран",
     "unknown": "Непознат",

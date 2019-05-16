@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Persen tembakan",
     "Damage (assisted / own)": "Kerusakan (Dibantu/Punya sendiri)",
-    "BR_xpCrew": "krew",
+    "BR_xpCrew": "",
     "Friend": "Teman",
     "Ignored": "Diabaikan",
     "unknown": "tidak diketahui",

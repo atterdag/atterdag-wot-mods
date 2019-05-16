@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Trefferquote",
     "Damage (assisted / own)": "Schaden (ermöglicht / verursacht)",
-    "BR_xpCrew": "Besatzung",
+    "BR_xpCrew": "",
     "Friend": "Freund",
     "Ignored": "Ignoriert",
     "unknown": "unbekannt",

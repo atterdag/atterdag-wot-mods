@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Pataikymo procentas",
     "Damage (assisted / own)": "Žala (pagalbinė / sava)",
-    "BR_xpCrew": "įgula",
+    "BR_xpCrew": "",
     "Friend": "Draugas",
     "Ignored": "Ignoruojamas",
     "unknown": "nežinomas",

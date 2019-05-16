@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Выніковасць траплянняў",
     "Damage (assisted / own)": "Пашкоджанні (з вашай дапамогай / свае)",
-    "BR_xpCrew": "экіпажу",
+    "BR_xpCrew": "",
     "Friend": "Сябар",
     "Ignored": "Ігнараваны",
     "unknown": "невядома",

@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Percentuale colpi",
     "Damage (assisted / own)": "Danno (assist / propri)",
-    "BR_xpCrew": "truppa",
+    "BR_xpCrew": "",
     "Friend": "Amico",
     "Ignored": "Ignora",
     "unknown": "sconosciuto",

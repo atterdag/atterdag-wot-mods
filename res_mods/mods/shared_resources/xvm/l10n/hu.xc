@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Találati arány",
     "Damage (assisted / own)": "Sebzés (hozzájárulás / saját)",
-    "BR_xpCrew": "legénység",
+    "BR_xpCrew": "",
     "Friend": "Barát",
     "Ignored": "Tiltott",
     "unknown": "ismeretlen",

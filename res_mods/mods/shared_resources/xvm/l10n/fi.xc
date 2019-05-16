@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Osumaprosentti",
     "Damage (assisted / own)": "Vahinko (avustettu / aiheutettu)",
-    "BR_xpCrew": "miehistö",
+    "BR_xpCrew": "",
     "Friend": "Liittolainen",
     "Ignored": "Sivuutettu",
     "unknown": "ei tietoa",

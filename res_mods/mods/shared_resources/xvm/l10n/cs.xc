@@ -65,7 +65,7 @@
     "wheel": "",
     "Hit percent": "Procento zásahů",
     "Damage (assisted / own)": "Poškození (asistence / vlastní)",
-    "BR_xpCrew": "posádka",
+    "BR_xpCrew": "",
     "Friend": "Přítel",
     "Ignored": "Ignorovaný",
     "unknown": "neznámo",
