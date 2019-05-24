@@ -14,12 +14,12 @@
     // Dynamic color by various statistical parameters.
     // Динамический цвет по различным статистическим показателям.
     "colorRating": {
-      "very_bad":     "0xFE0E00",   // very bad   / очень плохо
-      "bad":          "0xFE7903",   // bad        / плохо
-      "normal":       "0xF8F400",   // normal     / средне
-      "good":         "0x60FF00",   // good       / хорошо
-      "very_good":    "0x02C9B3",   // very good  / очень хорошо
-      "unique":       "0xD042F3"    // unique     / уникально
+      "very_bad":     "0xFE0E00",     // very bad  / очень плохо
+      "bad":          "0xFE7903",     // bad       / плохо
+      "normal":       "0xF8F400",     // normal    / средне
+      "good":         "0x60FF00",     // good      / хорошо
+      "very_good":    "0x02C9B3",     // very good / очень хорошо
+      "unique":       "0xD042F3"      // unique    / уникально
     },
     // WoTLabs ratings
     "wnColorRating": {

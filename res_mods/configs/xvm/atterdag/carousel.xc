@@ -70,7 +70,7 @@
     // Order of nations.
     // Порядок наций.
     //"nations_order": ["ussr", "germany", "usa", "china", "france", "uk", "japan", "czech", "poland", "sweden", "italy"],
-    "nations_order": [],
+    "nations_order": ["germany", "ussr", "usa", "france", "uk", "china", "japan", "czech", "sweden", "italy", "poland" ],
     // Order of types of vehicles.
     // Порядок классов техники.
     "types_order":   ["lightTank", "mediumTank", "heavyTank", "AT-SPG", "SPG"],
@@ -79,7 +79,7 @@
     // "nation", "type", "level", "-level", "maxBattleTier", "-maxBattleTier", "premium", "-premium",
     // "battles", "-battles", "winRate", "-winRate", "markOfMastery", "-markOfMastery", "xtdb", "-xtdb",
     // "xte", "-xte", "wtr", "-wtr", "damageRating", "-damageRating", "marksOnGun", "-marksOnGun"
-    "sorting_criteria": ["nation", "type", "level"],
+    "sorting_criteria": ["type", "level", "nation"],
     // Suppress the tooltips for tanks in carousel.
     // Убрать подсказки к танкам в карусели.
     "suppressCarouselTooltips": false

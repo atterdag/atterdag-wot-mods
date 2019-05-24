@@ -274,12 +274,10 @@ def onEnterWorld(self, prereqs):
         return
     if player is None:
         player = BigWorld.player()
-    if not enemyVehiclesMaxHP:
-        pass
     if self.publicInfo['team'] != player.team:
-        vehiclesHealth[self.id] = self.health
+        vehiclesHealth[self.id] = self.health if self.health is not None else 0
         if self.id in enemyVehiclesMaxHP and enemyVehiclesMaxHP[self.id] < self.health:
-            enemyVehiclesMaxHP[self.id] = self.health
+            enemyVehiclesMaxHP[self.id] = self.health if self.health is not None else 0
             enemyVehiclesSumMaxHP = sum(enemyVehiclesMaxHP.values())
     else:
         allyVehicles.append(self.id)
@@ -297,7 +295,7 @@ def FragsCollectableStats_addVehicleStatusUpdate(self, vInfoVO):
     if player is None:
         player = BigWorld.player()
     if vInfoVO.vehicleID not in enemyVehiclesMaxHP and vInfoVO.team != player.team:
-        enemyVehiclesMaxHP[vInfoVO.vehicleID] = vInfoVO.vehicleType.maxHealth
+        enemyVehiclesMaxHP[vInfoVO.vehicleID] = vInfoVO.vehicleType.maxHealth if vInfoVO.vehicleType.maxHealth is not None else 0
         enemyVehiclesSumMaxHP = sum(enemyVehiclesMaxHP.values())
 
 @registerEvent(PlayerAvatar, '_PlayerAvatar__destroyGUI')

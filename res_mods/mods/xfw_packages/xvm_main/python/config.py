@@ -82,7 +82,7 @@ def load(e):
                     xfw_filewatcher.watcher_add(XVM_EVENT.RELOAD_CONFIG, XVM.CONFIG_DIR, \
                         "import BigWorld;"\
                         "from gui.shared import g_eventBus, events;" \
-                        "BigWorld.callback(0,lambda: g_eventBus.handleEvent(events.HasCtxEvent('%s', {'filename':'%s'})))" % (XVM_EVENT.RELOAD_CONFIG, XVM.CONFIG_FILE), \
+                        "BigWorld.callback(0, lambda: g_eventBus.handleEvent(events.HasCtxEvent('%s', {'filename':'%s'})))" % (XVM_EVENT.RELOAD_CONFIG, XVM.CONFIG_FILE), \
                         True)
                 xfw_filewatcher.watcher_start(XVM_EVENT.RELOAD_CONFIG)
             except Exception:
@@ -198,7 +198,8 @@ class NetworkServicesSettings(object):
         self.comments = data.get('comments', True) if active else False
         self.scale = data.get('scale', 'xvm')
         self.rating = data.get('rating', 'wgr')
-        self.topClansCount = int(data.get('topClansCount', 50))
+        self.topClansCountWgm = int(data.get('topClansCount', 50))
+        self.topClansCountWsh = int(data.get('topClansCountWsh', 50))
         self.flag = data.get('flag', None)
         self.xmqp = data.get('xmqp', True) if active else False
         # TODO: configure color in the personal cabinet
