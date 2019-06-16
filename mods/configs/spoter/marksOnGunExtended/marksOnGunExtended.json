@@ -3,8 +3,8 @@
     "background": true,
     "backgroundData": {
         "alpha": 1.0,
-        "width": 115,
-        "height": 42
+        "width": 163,
+        "height": 50
     },
     "backgroundImage": "../maps/icons/quests/inBattleHint.png",
     "battleMessage": "<font size=\"14\">{currentMarkOfGun}</font> <font size=\"10\">{damageCurrentPercent}</font><font size=\"14\"> ~ {c_nextMarkOfGun}</font> <font size=\"10\">{c_damageNextPercent}</font>\n<font size=\"20\">{c_battleMarkOfGun}{status}</font><font size=\"14\">{c_damageCurrent}</font>",
@@ -64,17 +64,14 @@
     "enabled": true,
     "font": "$IMELanguageBar",
     "panel": {
-        "index": 1,
-        "visible": true,
+        "width": 163,
         "drag": true,
-        "height": 42,
-        "width": 115,
-        "alignY": "bottom",
         "alignX": "left",
-        "limit": true,
         "y": -228,
         "x": 230,
-        "border": true
+        "border": true,
+        "alignY": "bottom",
+        "height": 50
     },
     "panelSize": {
         "heightNormal": 50,
@@ -100,7 +97,7 @@
     "showInStatistic": true,
     "showInTechTree": true,
     "showInTechTreeMarkOfGunPercent": true,
-    "showInTechTreeMarkOfGunPercentFirst": false,
+    "showInTechTreeMarkOfGunPercentFirst": true,
     "unknownColor": 16,
     "upColor": 18,
     "version": 703
