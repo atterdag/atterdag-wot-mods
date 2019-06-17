@@ -26,7 +26,7 @@ def checkNames(vehs):
 # PRIVATE
 
 _data = {
-    # Last update: 23.05.2019
+    # Last update: 11.06.2019
     "china:Ch01_Type59":                     'Typ59',
     "china:Ch01_Type59_Gold":                'Typ59g',
     "china:Ch02_Type62":                     'Typ62',
@@ -235,6 +235,7 @@ _data = {
     "germany:G139_MKA":                      'MKA',
     "germany:G13_VK3001H":                   '3001h',
     "germany:G140_HWK_30":                   'HWK30',
+    "germany:G141_VK7501K":                  '7501k',
     "germany:G15_VK3601H":                   '3601h',
     "germany:G16_PzVIB_Tiger_II":            'Tig2',
     "germany:G16_PzVIB_Tiger_II_F":          'Tig2·h',
@@ -424,6 +425,7 @@ _data = {
     "uk:GB08_Churchill_I":                   'Chrch1',
     "uk:GB08_Churchill_I_IGR":               'Chrch1',
     "uk:GB09_Churchill_VII":                 'Chrch7',
+    "uk:GB101_FV1066_Senlac":                'Senlac',
     "uk:GB10_Black_Prince":                  'BlPrn',
     "uk:GB11_Caernarvon":                    'Caer',
     "uk:GB11_Caernarvon_IGR":                'Caer',
@@ -691,6 +693,7 @@ _data = {
     "ussr:R159_SU_130PM":                    'Su130pm',
     "ussr:R15_S-51":                         'S·51',
     "ussr:R160_T_50_2":                      't50·2',
+    "ussr:R161_T_116":                       't116',
     "ussr:R16_SU-18":                        'Su·18',
     "ussr:R17_SU-100":                       'Su100',
     "ussr:R18_SU-152":                       'Su152',

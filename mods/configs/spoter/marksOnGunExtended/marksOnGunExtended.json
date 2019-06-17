@@ -64,14 +64,17 @@
     "enabled": true,
     "font": "$IMELanguageBar",
     "panel": {
-        "width": 163,
+        "index": 1,
+        "visible": true,
         "drag": true,
+        "height": 50,
+        "width": 163,
+        "alignY": "bottom",
         "alignX": "left",
+        "limit": true,
         "y": -228,
         "x": 230,
-        "border": true,
-        "alignY": "bottom",
-        "height": 50
+        "border": true
     },
     "panelSize": {
         "heightNormal": 50,
@@ -100,5 +103,5 @@
     "showInTechTreeMarkOfGunPercentFirst": true,
     "unknownColor": 16,
     "upColor": 18,
-    "version": 703
+    "version": 707
 }

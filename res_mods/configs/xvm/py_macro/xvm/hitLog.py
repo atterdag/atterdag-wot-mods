@@ -14,6 +14,7 @@ from VehicleEffects import DamageFromShotDecoder
 from skeletons.gui.battle_session import IBattleSessionProvider
 from vehicle_systems.tankStructure import TankPartIndexes
 from gui.battle_control import avatar_getter
+from constants import ATTACK_REASON
 
 from xfw import *
 from xfw_actionscript.python import *
@@ -24,11 +25,10 @@ import xvm_main.python.config as config
 import xvm_main.python.userprefs as userprefs
 import xvm_battle.python.battle as battle
 
-from xvm.damageLog import HIT_EFFECT_CODES, keyLower, chooseRating, ATTACK_REASONS, RATINGS, VEHICLE_CLASSES_SHORT
+from xvm.damageLog import HIT_EFFECT_CODES, keyLower, chooseRating, ATTACK_REASONS, RATINGS, VEHICLE_CLASSES_SHORT, ConfigCache
 import parser_addon
 
 macros = None
-autoReloadConfig = None
 hitLogConfig = {}
 isDownAlt = False
 
@@ -57,17 +57,10 @@ GROUP_HITS_PLAYER = 'groupHitsByPlayer'
 ADD_TO_END = 'addToEnd'
 LINES = 'lines'
 MOVE_IN_BATTLE = 'moveInBattle'
-ENABLED = HIT_LOG + 'enabled'
+HIT_LOG_ENABLED = HIT_LOG + 'enabled'
 SHOW_SELF_DAMAGE = HIT_LOG + 'showSelfDamage'
 SHOW_ALLY_DAMAGE = HIT_LOG + 'showAllyDamage'
-DEFAULT_X = 320
-DEFAULT_Y = 0
-
-SECTION_LOG = HIT_LOG + 'log/'
-SECTION_ALT_LOG = HIT_LOG + 'logAlt/'
-SECTION_BACKGROUND = HIT_LOG + 'logBackground/'
-SECTION_ALT_BACKGROUND = HIT_LOG + 'logAltBackground/'
-SECTIONS = (SECTION_LOG, SECTION_ALT_LOG, SECTION_BACKGROUND, SECTION_ALT_BACKGROUND)
+ON_HIT_LOG = 'ON_HIT_LOG'
 
 PILLBOX = 'pillbox'
 
@@ -75,105 +68,34 @@ APPEND = 0
 CHANGE = 1
 INSERT = 2
 
+class HIT_LOG_SECTIONS(object):
+    LOG = HIT_LOG + 'log/'
+    ALT_LOG = HIT_LOG + 'logAlt/'
+    BACKGROUND = HIT_LOG + 'logBackground/'
+    ALT_BACKGROUND = HIT_LOG + 'logAltBackground/'
+    SECTIONS = (LOG, ALT_LOG, BACKGROUND, ALT_BACKGROUND)
+
+
+_config = ConfigCache()
+
+
 def readyConfig(section):
-    if autoReloadConfig or (section not in hitLogConfig):
-        return {'vehicleClass': keyLower(config.get(section + 'vtype')),
-                'c_Shell': keyLower(config.get(section + 'c:costShell')),
-                'costShell': keyLower(config.get(section + 'costShell')),
-                'c_dmg-kind': keyLower(config.get(section + 'c:dmg-kind')),
-                'c_VehicleClass': keyLower(config.get(section + 'c:vtype')),
-                'dmg-kind': keyLower(config.get(section + 'dmg-kind')),
-                'dmg-kind-player': keyLower(config.get(section + 'dmg-kind-player')),
-                'c_teamDmg': keyLower(config.get(section + 'c:team-dmg')),
-                'teamDmg': keyLower(config.get(section + 'team-dmg')),
-                'compNames': keyLower(config.get(section + 'comp-name')),
-                'typeShell': keyLower(config.get(section + 'type-shell')),
-                'c_typeShell': keyLower(config.get(section + 'c:type-shell')),
+    if config.config_autoreload or (section not in hitLogConfig):
+        return {'vehicleClass': keyLower(_config.get(section + 'vtype')),
+                'c_Shell': keyLower(_config.get(section + 'c:costShell')),
+                'costShell': keyLower(_config.get(section + 'costShell')),
+                'c_dmg-kind': keyLower(_config.get(section + 'c:dmg-kind')),
+                'c_VehicleClass': keyLower(_config.get(section + 'c:vtype')),
+                'dmg-kind': keyLower(_config.get(section + 'dmg-kind')),
+                'dmg-kind-player': keyLower(_config.get(section + 'dmg-kind-player')),
+                'c_teamDmg': keyLower(_config.get(section + 'c:team-dmg')),
+                'teamDmg': keyLower(_config.get(section + 'team-dmg')),
+                'compNames': keyLower(_config.get(section + 'comp-name')),
+                'typeShell': keyLower(_config.get(section + 'type-shell')),
+                'c_typeShell': keyLower(_config.get(section + 'c:type-shell')),
                 }
     else:
         return hitLogConfig[section]
-
-
-def updateValueMacros(section, value):
-    global macros
-
-    def readColor(sec, m, xm=None):
-        colors = config.get('colors/' + sec)
-        if m is not None and colors is not None:
-            for val in colors:
-                if val['value'] > m:
-                    return '#' + val['color'][2:] if val['color'][:2] == '0x' else val['color']
-        elif xm is not None:
-            colors_x = config.get('colors/x')
-            for val in colors_x:
-                if val['value'] > xm:
-                    return '#' + val['color'][2:] if val['color'][:2] == '0x' else val['color']
-
-    conf = readyConfig(section)
-    if macros is None:
-        xwn8 = value.get('xwn8', None)
-        xwtr = value.get('xwtr', None)
-        xeff = value.get('xeff', None)
-        xwgr = value.get('xwgr', None)
-        macros = {'vehicle': value['shortUserString'],
-                  'name': value['name'],
-                  'clannb': value['clanAbbrev'],
-                  'clan': ''.join(['[', value['clanAbbrev'], ']']) if value['clanAbbrev'] else '',
-                  'level': value['level'],
-                  'clanicon': value['clanicon'],
-                  'squad-num': value['squadnum'],
-                  'alive': 'al' if value['isAlive'] else None,
-                  'splash-hit': 'splash' if value['splashHit'] else None,
-                  'critical-hit': 'crit' if value['criticalHit'] else None,
-                  'wn8': value.get('wn8', None),
-                  'xwn8': value.get('xwn8', None),
-                  'wtr': value.get('wtr', None),
-                  'xwtr': value.get('xwtr', None),
-                  'eff': value.get('eff', None),
-                  'xeff': value.get('xeff', None),
-                  'wgr': value.get('wgr', None),
-                  'xwgr': value.get('xwgr', None),
-                  'xte': value.get('xte', None),
-                  'r': '{{%s}}' % chooseRating,
-                  'xr': '{{%s}}' % chooseRating if chooseRating[0] == 'x' else '{{x%s}}' % chooseRating,
-                  'c:r': '{{c:%s}}' % chooseRating,
-                  'c:xr': '{{c:%s}}' % chooseRating if chooseRating[0] == 'x' else '{{c:x%s}}' % chooseRating,
-                  'c:wn8': readColor('wn8', value.get('wn8', None), xwn8),
-                  'c:xwn8': readColor('x', xwn8),
-                  'c:wtr': readColor('wtr', value.get('wtr', None), xwtr),
-                  'c:xwtr': readColor('x', xwtr),
-                  'c:eff': readColor('eff', value.get('eff', None), xeff),
-                  'c:xeff': readColor('x', xeff),
-                  'c:wgr': readColor('wgr', value.get('wgr', None), xwgr),
-                  'c:xwgr': readColor('x', xwgr),
-                  'c:xte': readColor('x', value.get('xte', None)),
-                  'diff-masses': value.get('diff-masses', None),
-                  'nation': value.get('nation', None),
-                  'blownup': 'blownup' if value['blownup'] else None,
-                  'vehiclename': value.get('attackerVehicleName', None),
-                  'battletype-key': value.get('battletype-key', 'unknown')
-                  }
-    macros.update({'c:team-dmg': conf['c_teamDmg'].get(value['teamDmg'], '#FFFFFF'),
-                   'team-dmg': conf['teamDmg'].get(value['teamDmg'], ''),
-                   'vtype': conf['vehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackedVehicleType']], ''),
-                   'c:costShell': conf['c_Shell'].get(value['costShell'], None),
-                   'costShell': conf['costShell'].get(value['costShell'], None),
-                   'c:dmg-kind': conf['c_dmg-kind'][ATTACK_REASONS[value['attackReasonID']]],
-                   'dmg-kind': conf['dmg-kind'].get(ATTACK_REASONS[value['attackReasonID']], 'reason: %s' % value['attackReasonID']),
-                   'dmg-kind-player': ''.join([conf['dmg-kind-player'].get(ATTACK_REASONS[i], None) for i in value.get('dmg-kind-player', [])]),
-                   'c:vtype': conf['c_VehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackedVehicleType']], '#CCCCCC'),
-                   'comp-name': conf['compNames'].get(value['compName'], None),
-                   'type-shell': conf['typeShell'].get(value['shellKind'], None),
-                   'type-shell-key': value['shellKind'] if value['shellKind'] is not None else 'not_shell',
-                   'c:type-shell': conf['c_typeShell'].get(value['shellKind'], None),
-                   'dmg': value['damage'],
-                   'dmg-ratio': value['dmgRatio'],
-                   'n-player': value.get('n-player', 0),
-                   'dmg-player': value.get('dmg-player', 0),
-                   'dmg-ratio-player': value.get('dmg-ratio-player', 0),
-                   'c:dmg-ratio-player': readColor('dmg_ratio_player', value.get('dmg-ratio-player', None)),
-                   'dmg-deviation': value['damageDeviation'] * 100 if value['damageDeviation'] is not None else None
-                   })
 
 
 def parser(strHTML, _macros=None):
@@ -191,10 +113,14 @@ def removePlayerFromLogs(vehicleID):
             _dict[key].clear()
             del _dict[key]
 
-    del_key(_log.players, vehicleID)
-    del_key(_logAlt.players, vehicleID)
-    del_key(_logBackground.players, vehicleID)
-    del_key(_logAltBackground.players, vehicleID)
+    del_key(_log.groupHitByPlayer.players, vehicleID)
+    del_key(_logAlt.groupHitByPlayer.players, vehicleID)
+    del_key(_logBackground.groupHitByPlayer.players, vehicleID)
+    del_key(_logAltBackground.groupHitByPlayer.players, vehicleID)
+    del_key(_log.groupHitByFireRamming.players, vehicleID)
+    del_key(_logAlt.groupHitByFireRamming.players, vehicleID)
+    del_key(_logBackground.groupHitByFireRamming.players, vehicleID)
+    del_key(_logAltBackground.groupHitByFireRamming.players, vehicleID)
 
 
 class DataHitLog(object):
@@ -360,7 +286,7 @@ class DataHitLog(object):
             self.data['squadnum'] = None
         self.updateLabels()
 
-    def reload(self):
+    def loaded(self):
         self.intCD = self.ammo.getCurrentShellCD()
 
     def onHealthChanged(self, vehicle, newHealth, attackerID, attackReasonID, isVehicle=True):
@@ -431,7 +357,7 @@ class DataHitLog(object):
             self.shells[intCD]['costShell'] = 'gold-shell' if shell.id[1] in goldShells else 'silver-shell'
         ResMgr.purge(xmlPath, True)
         arena = avatar_getter.getArena()
-        self.data['battletype-key'] = BATTLE_TYPE.get(arena.guiType, 'unknown')
+        self.data['battletype-key'] = BATTLE_TYPE.get(arena.guiType, ARENA_GUI_TYPE.UNKNOWN)
 
     def updateVehInfo(self, vehicle):
         if vehicle.id not in self.vehHealth:
@@ -445,41 +371,130 @@ class DataHitLog(object):
 _data = DataHitLog()
 
 
-class HitLog(object):
+class GroupHit(object):
 
     def __init__(self, section):
         self.section = section
-        self.players = {}
         self.listLog = []
+        self.players = {}
         self.countLines = 0
         self.maxCountLines = None
-        self.numberLine = 0
-        self.S_GROUP_HITS_PLAYER = section + GROUP_HITS_PLAYER
-        self.S_ADD_TO_END = section + ADD_TO_END
+        self.isAddToEnd = False
         self.S_LINES = section + LINES
+        self.S_ADD_TO_END = section + ADD_TO_END
         self.S_FORMAT_HISTORY = section + FORMAT_HISTORY
-        self.S_MOVE_IN_BATTLE = SECTION_LOG + MOVE_IN_BATTLE
-        self.S_X = SECTION_LOG + 'x'
-        self.S_Y = SECTION_LOG + 'y'
-        self.x = 0
-        self.y = 0
+        self.ATTACK_REASON_FIRE_ID = ATTACK_REASON.getIndex(ATTACK_REASON.FIRE)
+        self.ATTACK_REASON_RAM_ID = ATTACK_REASON.getIndex(ATTACK_REASON.RAM)
+        self.attackReasonID = 0
+        self.damage = 0
+        self.isGroup = False
+        self.vehID = 0
 
-    def setPosition(self, battleType):
-        self._data = None
-        positon = {'x': config.get(self.S_X, DEFAULT_X), 'y': config.get(self.S_Y, DEFAULT_Y)}
-        if config.get(self.S_MOVE_IN_BATTLE, False):
-            _data = userprefs.get('hitLog/log/{}'.format(battleType), positon)
-            as_callback("hitLog_mouseDown", self.mouse_down)
-            as_callback("hitLog_mouseUp", self.mouse_up)
-            as_callback("hitLog_mouseMove", self.mouse_move)
-        else:
-            _data = positon
-        self.x = _data['x']
-        self.y = _data['y']
+    def sumDmg(self):
+        player = self.players[self.vehID]
+        player['dmg-player'] += self.damage
+        if self.attackReasonID not in player['dmg-kind-player']:
+            player['dmg-kind-player'].append(self.attackReasonID)
+        maxHealth = _data.vehHealth[self.vehID]['maxHealth'] if self.vehID in _data.vehHealth else 0
+        player['dmg-ratio-player'] = (player['dmg-player'] * 100 // maxHealth) if maxHealth != 0 else 0
 
-    def savePosition(self, battleType):
-        if (None not in [self.x, self.y]) and config.get(self.S_MOVE_IN_BATTLE, False):
-            userprefs.set('hitLog/log/{}'.format(battleType), {'x': self.x, 'y': self.y})
+    def updateValueMacros(self, value):
+        global macros
+
+        def readColor(sec, _value, _xvalue=None):
+
+            def getColor(c, v):
+                for i in c:
+                    if i['value'] > v:
+                        color = i['color']
+                        return '#' + color[2:] if color[:2] == '0x' else color
+                return None
+
+            colors = _config.get('colors/' + sec)
+            if _value is not None and colors is not None:
+                return getColor(colors, _value)
+            elif _xvalue is not None:
+                colors_x = _config.get('colors/x')
+                return getColor(colors_x, _xvalue)
+
+        conf = readyConfig(self.section)
+        if macros is None:
+            xwn8 = value.get('xwn8', None)
+            xwtr = value.get('xwtr', None)
+            xeff = value.get('xeff', None)
+            xwgr = value.get('xwgr', None)
+            macros = {'vehicle': value['shortUserString'],
+                      'name': value['name'],
+                      'clannb': value['clanAbbrev'],
+                      'clan': ''.join(['[', value['clanAbbrev'], ']']) if value['clanAbbrev'] else '',
+                      'level': value['level'],
+                      'clanicon': value['clanicon'],
+                      'squad-num': value['squadnum'],
+                      'alive': 'al' if value['isAlive'] else None,
+                      'splash-hit': 'splash' if value['splashHit'] else None,
+                      'critical-hit': 'crit' if value['criticalHit'] else None,
+                      'wn8': value.get('wn8', None),
+                      'xwn8': value.get('xwn8', None),
+                      'wtr': value.get('wtr', None),
+                      'xwtr': value.get('xwtr', None),
+                      'eff': value.get('eff', None),
+                      'xeff': value.get('xeff', None),
+                      'wgr': value.get('wgr', None),
+                      'xwgr': value.get('xwgr', None),
+                      'xte': value.get('xte', None),
+                      'r': '{{%s}}' % chooseRating,
+                      'xr': '{{%s}}' % chooseRating if chooseRating[0] == 'x' else '{{x%s}}' % chooseRating,
+                      'c:r': '{{c:%s}}' % chooseRating,
+                      'c:xr': '{{c:%s}}' % chooseRating if chooseRating[0] == 'x' else '{{c:x%s}}' % chooseRating,
+                      'c:wn8': readColor('wn8', value.get('wn8', None), xwn8),
+                      'c:xwn8': readColor('x', xwn8),
+                      'c:wtr': readColor('wtr', value.get('wtr', None), xwtr),
+                      'c:xwtr': readColor('x', xwtr),
+                      'c:eff': readColor('eff', value.get('eff', None), xeff),
+                      'c:xeff': readColor('x', xeff),
+                      'c:wgr': readColor('wgr', value.get('wgr', None), xwgr),
+                      'c:xwgr': readColor('x', xwgr),
+                      'c:xte': readColor('x', value.get('xte', None)),
+                      'diff-masses': value.get('diff-masses', None),
+                      'nation': value.get('nation', None),
+                      'blownup': 'blownup' if value['blownup'] else None,
+                      'vehiclename': value.get('attackerVehicleName', None),
+                      'battletype-key': value.get('battletype-key', ARENA_GUI_TYPE.UNKNOWN)
+                      }
+        macros.update({'c:team-dmg': conf['c_teamDmg'].get(value['teamDmg'], '#FFFFFF'),
+                       'team-dmg': conf['teamDmg'].get(value['teamDmg'], ''),
+                       'vtype': conf['vehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackedVehicleType']], ''),
+                       'c:costShell': conf['c_Shell'].get(value['costShell'], None),
+                       'costShell': conf['costShell'].get(value['costShell'], None),
+                       'c:dmg-kind': conf['c_dmg-kind'][ATTACK_REASONS[value['attackReasonID']]],
+                       'dmg-kind': conf['dmg-kind'].get(ATTACK_REASONS[value['attackReasonID']],
+                                                        'reason: %s' % value['attackReasonID']),
+                       'dmg-kind-player': ''.join([conf['dmg-kind-player'].get(ATTACK_REASONS[i], None) for i in
+                                                   value.get('dmg-kind-player', [])]),
+                       'c:vtype': conf['c_VehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackedVehicleType']], '#CCCCCC'),
+                       'comp-name': conf['compNames'].get(value['compName'], None),
+                       'type-shell': conf['typeShell'].get(value['shellKind'], None),
+                       'type-shell-key': value['shellKind'] if value['shellKind'] is not None else 'not_shell',
+                       'c:type-shell': conf['c_typeShell'].get(value['shellKind'], None),
+                       'dmg': value['damage'],
+                       'dmg-ratio': value['dmgRatio'],
+                       'n-player': value.get('n-player', 0),
+                       'dmg-player': value.get('dmg-player', 0),
+                       'dmg-ratio-player': value.get('dmg-ratio-player', 0),
+                       'c:dmg-ratio-player': readColor('dmg_ratio_player', value.get('dmg-ratio-player', None)),
+                       'dmg-deviation': value['damageDeviation'] * 100 if value['damageDeviation'] is not None else None
+                       })
+
+    def setParametrsHitLog(self):
+        self.countLines = len(self.listLog)
+        self.attackReasonID = _data.data['attackReasonID']
+        self.damage = _data.data['damage']
+        self.vehID = _data.vehicleID
+        try:
+            self.maxCountLines = int(parser(_config.get(self.S_LINES, 7), {'battletype-key': _data.data.get('battletype-key', ARENA_GUI_TYPE.UNKNOWN)}))
+        except TypeError:
+            self.maxCountLines = 7
+        self.isAddToEnd = _config.get(self.S_ADD_TO_END, False)
 
     def reset(self):
         self.players = {}
@@ -488,29 +503,7 @@ class HitLog(object):
         self.maxCountLines = None
 
 
-    def mouse_down(self, _data):
-        if _data['buttonIdx'] == 0:
-            self._data = _data
-
-    def mouse_up(self, _data):
-        if _data['buttonIdx'] == 0:
-            self._data = None
-
-    def mouse_move(self, _data):
-        if self._data:
-            self.x += (_data['x'] - self._data['x'])
-            self.y += (_data['y'] - self._data['y'])
-            as_event('ON_HIT_LOG')
-
-    def sumDmg(self, vehID):
-        pl = self.players[vehID]
-        pl['dmg-player'] += _data.data['damage']
-        if _data.data['attackReasonID'] not in pl['dmg-kind-player']:
-            pl['dmg-kind-player'].append(_data.data['attackReasonID'])
-        maxHealth = _data.vehHealth[vehID]['maxHealth'] if vehID in _data.vehHealth else 0
-        pl['dmg-ratio-player'] = (pl['dmg-player'] * 100 // maxHealth) if maxHealth != 0 else 0
-
-##------------Group hits by players name----------------
+class GroupHitByPlayer(GroupHit):
 
     def updateList(self, playerData, mode):
         playerData.update(_data.data)
@@ -518,37 +511,33 @@ class HitLog(object):
             playerData['damage'] = playerData['fireDmg']
         elif playerData['attackReasonID'] == 2:
             playerData['damage'] = playerData['rammingDmg']
-        updateValueMacros(self.section, playerData)
+        self.updateValueMacros(playerData)
         if mode == APPEND:
-            self.listLog.append(parser(config.get(self.S_FORMAT_HISTORY, '')))
+            self.listLog.append(parser(_config.get(self.S_FORMAT_HISTORY, '')))
         elif mode == INSERT:
-            self.listLog.insert(0, parser(config.get(self.S_FORMAT_HISTORY, '')))
+            self.listLog.insert(0, parser(_config.get(self.S_FORMAT_HISTORY, '')))
         elif mode == CHANGE:
-            self.listLog[playerData['numberLine']] = parser(config.get(self.S_FORMAT_HISTORY, ''))
-        if (self.section == SECTION_LOG) or (self.section == SECTION_ALT_LOG):
-            if not config.get(self.S_MOVE_IN_BATTLE, False):
-                self.x = parser(config.get(self.S_X, DEFAULT_X))
-                self.y = parser(config.get(self.S_Y, DEFAULT_Y))
+            self.listLog[playerData['numberLine']] = parser(_config.get(self.S_FORMAT_HISTORY, ''))
 
     def updateGroupFireRamming(self, playerData):
 
         def updateDmg(typeTime, typeDmg):
             if (BigWorld.time() - playerData[typeTime]) < 1.0:
-                playerData[typeDmg] += _data.data['damage']
+                playerData[typeDmg] += self.damage
             else:
-                playerData[typeDmg] = _data.data['damage']
+                playerData[typeDmg] = self.damage
                 playerData['n-player'] += 1
             playerData[typeTime] = BigWorld.time()
 
-        if _data.data['attackReasonID'] == 0:
+        if self.attackReasonID == 0:
             playerData['n-player'] += 1
-        elif _data.data['attackReasonID'] == 1:
+        elif self.attackReasonID == 1:
             updateDmg('fireTime', 'fireDmg')
-        elif _data.data['attackReasonID'] == 2:
+        elif self.attackReasonID == 2:
             updateDmg('rammingTime', 'rammingDmg')
 
     def updatePlayers(self, vehID):
-        self.sumDmg(vehID)
+        self.sumDmg()
         pl = self.players[vehID]
         self.updateGroupFireRamming(pl)
         if self.maxCountLines == 1:
@@ -560,6 +549,8 @@ class HitLog(object):
             else:
                 if (pl['numberLine'] >= 0) and (pl['numberLine'] < self.countLines):
                     self.listLog.pop(pl['numberLine'])
+                else:
+                    self.listLog.pop(0)
                 for v in self.players:
                     if self.players[v]['numberLine'] > pl['numberLine']:
                         self.players[v]['numberLine'] -= 1
@@ -571,25 +562,30 @@ class HitLog(object):
             else:
                 if (pl['numberLine'] > 0) and (pl['numberLine'] < self.countLines):
                     self.listLog.pop(pl['numberLine'])
+                else:
+                    self.listLog.pop(self.countLines - 1)
                 for v in self.players:
                     if self.players[v]['numberLine'] < pl['numberLine']:
                         self.players[v]['numberLine'] += 1
                 pl['numberLine'] = 0
                 self.updateList(pl, INSERT)
 
+    def addPlayer(self):
+        return {'dmg-player': self.damage,
+                'dmg-ratio-player': _data.data['dmgRatio'],
+                'n-player': 1,
+                'fireDmg': 0,
+                'fireTime': 0,
+                'rammingDmg': 0,
+                'rammingTime': 0,
+                'numberLine': 0,
+                'dmg-kind-player': [_data.data['attackReasonID']]
+                }
+
     def addPlayers(self, vehID):
-        self.players[vehID] = {'dmg-player': _data.data['damage'],
-                               'dmg-ratio-player': _data.data['dmgRatio'],
-                               'n-player': 1,
-                               'fireDmg': 0,
-                               'fireTime': 0,
-                               'rammingDmg': 0,
-                               'rammingTime': 0,
-                               'numberLine': 0,
-                               'dmg-kind-player': [_data.data['attackReasonID']]
-                               }
-        if _data.data['attackReasonID'] == 2:
-            self.players[vehID]['rammingDmg'] = _data.data['damage']
+        self.players[vehID] = self.addPlayer()
+        if self.attackReasonID == 2:
+            self.players[vehID]['rammingDmg'] = self.damage
             self.players[vehID]['rammingTime'] = BigWorld.time()
         if self.maxCountLines == 1:
             self.players[vehID]['numberLine'] = 0
@@ -611,118 +607,181 @@ class HitLog(object):
             self.players[vehID]['numberLine'] = 0
             self.updateList(self.players[vehID], INSERT)
 
-    def groupHitsPlayer(self):
+    def getListLog(self):
+        self.setParametrsHitLog()
         vehID = _data.vehicleID
         if vehID in self.players:
             self.updatePlayers(vehID)
         else:
             self.addPlayers(vehID)
+        return self.listLog
 
-##------------Not group hits by player names----------------
 
-    def notGroupHitsPlayer(self):
+class GroupHitByFireRamming(GroupHit):
 
-        def upGroupFireRamming(pl, typeTime, typeDmg, typeNumberLine, typeNPlayer):
-            if (BigWorld.time() - pl[typeTime]) < 1.0:
-                isGroup = True
-                pl[typeDmg] += _data.data['damage']
-            else:
-                pl[typeDmg] = _data.data['damage']
-                pl['n-player'] += 1
-                pl[typeNPlayer] = pl['n-playerShot'] = pl['n-player']
-                pl[typeNumberLine] = self.countLines + 1 if self.isAddToEnd else -1
-                isGroup = False
-            pl[typeTime] = BigWorld.time()
-            return isGroup
+    def udateData(self):
+        data = _data.data.copy()
+        player = self.players[self.vehID]
+        data['dmg-player'] = player['dmg-player']
+        data['dmg-ratio-player'] = player['dmg-ratio-player']
+        data['damage'] = player['damage']
+        data['n-player'] = player['n-player']
+        data['dmg-kind-player'] = player['dmg-kind-player']
+        self.updateValueMacros(data)
 
-        vehID = _data.vehicleID
-        isGroupFire = False
-        isGroupRamming = False
-        if vehID in self.players:
-            self.sumDmg(vehID)
-            pl = self.players[vehID]
-            if _data.data['attackReasonID'] == 0:
-                pl['n-playerShot'] += 1
-                pl['n-player'] = pl['n-playerShot']
-            elif _data.data['attackReasonID'] == 1:
-                isGroupFire = upGroupFireRamming(pl, 'fireTime', 'fireDmg', 'numberLineFire', 'n-playerFire')
-            elif _data.data['attackReasonID'] == 2:
-                isGroupFire = upGroupFireRamming(pl, 'rammingTime', 'rammingDmg', 'numberLineRamming', 'n-playerRamming')
-        else:
-            pl = {'dmg-player': _data.data['damage'],
-                  'dmg-ratio-player': _data.data['dmgRatio'],
-                  'n-player': 1,
-                  'fireDmg': 0,
-                  'fireTime': 0,
-                  'rammingDmg': 0,
-                  'rammingTime': 0,
-                  'numberLineFire': 0,
-                  'numberLineRamming': 0,
-                  'n-playerShot': 1,
-                  'n-playerFire': 1,
-                  'n-playerRamming': 1,
-                  'dmg-kind-player': [_data.data['attackReasonID']]}
-            if _data.data['attackReasonID'] == 2:
-                pl['rammingDmg'] = _data.data['damage']
-                pl['numberLineRamming'] = self.countLines if self.isAddToEnd else -1
-            elif _data.data['attackReasonID'] == 1:
-                pl['fireDmg'] = _data.data['damage']
-                pl['numberLineFire'] = self.countLines if self.isAddToEnd else -1
-            self.players[vehID] = pl
-        pl.update(_data.data)
-        if pl['attackReasonID'] == 1:
-            pl['damage'] = pl['fireDmg']
-            pl['n-player'] = pl['n-playerFire']
-        elif pl['attackReasonID'] == 2:
-            pl['damage'] = pl['rammingDmg']
-            pl['n-player'] = pl['n-playerRamming']
-        else:
-            pl['n-player'] = pl['n-playerShot']
-        updateValueMacros(self.section, pl)
-        if isGroupFire and ((pl['numberLineFire'] >= 0) or (pl['numberLineFire'] < self.maxCountLines)):
-            self.listLog[pl['numberLineFire']] = parser(config.get(self.S_FORMAT_HISTORY, ''))
-        elif isGroupRamming and ((pl['numberLineRamming'] >= 0) or (pl['numberLineRamming'] < self.maxCountLines)):
-            self.listLog[pl['numberLineRamming']] = parser(config.get(self.S_FORMAT_HISTORY, ''))
+    def udateListLog(self):
+        player = self.players[self.vehID]
+        if self.isGroup:
+            self.listLog[player[self.attackReasonID]['numberLine']] = parser(_config.get(self.S_FORMAT_HISTORY, ''))
         elif self.isAddToEnd:
             if self.countLines >= self.maxCountLines and 0 < self.countLines:
                 self.listLog.pop(0)
-            for v in self.players:
-                self.players[v]['numberLineFire'] -= 1
-                self.players[v]['numberLineRamming'] -= 1
-            self.listLog.append(parser(config.get(self.S_FORMAT_HISTORY, '')))
+                for v in self.players.itervalues():
+                    if self.ATTACK_REASON_FIRE_ID in v:
+                        v[self.ATTACK_REASON_FIRE_ID]['numberLine'] -= 1
+                    if self.ATTACK_REASON_RAM_ID in v:
+                        v[self.ATTACK_REASON_RAM_ID]['numberLine'] -= 1
+            self.listLog.append(parser(_config.get(self.S_FORMAT_HISTORY, '')))
         else:
             if self.countLines >= self.maxCountLines and 0 < self.countLines:
                 self.listLog.pop(self.countLines - 1)
-            for v in self.players:
-                self.players[v]['numberLineFire'] += 1
-                self.players[v]['numberLineRamming'] += 1
-            self.listLog.insert(0, parser(config.get(self.S_FORMAT_HISTORY, '')))
+            for v in self.players.itervalues():
+                if self.ATTACK_REASON_FIRE_ID in v:
+                    v[self.ATTACK_REASON_FIRE_ID]['numberLine'] += 1
+                if self.ATTACK_REASON_RAM_ID in v:
+                    v[self.ATTACK_REASON_RAM_ID]['numberLine'] += 1
+            self.listLog.insert(0, parser(_config.get(self.S_FORMAT_HISTORY, '')))
 
+    def addAttackReasonID(self):
+        return {'damage': self.damage,
+                'leftTime': BigWorld.time(),
+                'numberLine': self.countLines if self.isAddToEnd else -1}
+
+    def addPlayer(self):
+        return {'dmg-player': self.damage,
+                'dmg-ratio-player': _data.data['dmgRatio'],
+                'damage': self.damage,
+                'n-player': 1,
+                'dmg-kind-player': [self.attackReasonID]}
+
+    def updateAttackReasonID(self):
+        player = self.players[self.vehID]
+        if self.attackReasonID in player:
+            paramAttack = player[self.attackReasonID]
+            if (BigWorld.time() - paramAttack['leftTime']) < 1.0:
+                self.isGroup = True
+                paramAttack['damage'] += self.damage
+            else:
+                player['n-player'] += 1
+                paramAttack['damage'] = self.damage
+                paramAttack['numberLine'] = self.countLines if self.isAddToEnd else -1
+            paramAttack['leftTime'] = BigWorld.time()
+            player['damage'] = paramAttack['damage']
+        else:
+            player[self.attackReasonID] = self.addAttackReasonID()
+            player['damage'] = self.damage
+
+    def updatePlayer(self):
+        self.isGroup = False
+        if self.vehID in self.players:
+            player = self.players[self.vehID]
+            if self.attackReasonID in [1, 2]:
+                self.updateAttackReasonID()
+            else:
+                player['n-player'] += 1
+                player['damage'] = self.damage
+            self.sumDmg()
+        else:
+            self.players[self.vehID] = self.addPlayer()
+            if self.attackReasonID in [1, 2]:
+                self.players[self.vehID][self.attackReasonID] = self.addAttackReasonID()
+
+    def getListLog(self):
+        self.setParametrsHitLog()
+        self.updatePlayer()
+        self.udateData()
+        self.udateListLog()
+        return self.listLog
+
+
+class HitLog(object):
+
+    def __init__(self, section):
+        self.section = section
+        self.listLog = []
+        self.groupHitByPlayer = GroupHitByPlayer(section)
+        self.groupHitByFireRamming = GroupHitByFireRamming(section)
+        self.S_GROUP_HITS_PLAYER = section + GROUP_HITS_PLAYER
+        self.S_MOVE_IN_BATTLE = HIT_LOG_SECTIONS.LOG + MOVE_IN_BATTLE
+        self.DEFAULT_X = 320
+        self.DEFAULT_Y = 0
+        self.S_X = HIT_LOG_SECTIONS.LOG + 'x'
+        self.S_Y = HIT_LOG_SECTIONS.LOG + 'y'
+        self.x = 0
+        self.y = 0
+
+    def setPosition(self, battleType):
+        self._data = None
+        positon = {'x': _config.get(self.S_X, self.DEFAULT_X), 'y': _config.get(self.S_Y, self.DEFAULT_Y)}
+        if _config.get(self.S_MOVE_IN_BATTLE, False):
+            _data = userprefs.get(HIT_LOG_SECTIONS.LOG + '{}'.format(battleType), positon)
+            as_callback("hitLog_mouseDown", self.mouse_down)
+            as_callback("hitLog_mouseUp", self.mouse_up)
+            as_callback("hitLog_mouseMove", self.mouse_move)
+        else:
+            _data = positon
+        self.x = _data['x']
+        self.y = _data['y']
+
+    def savePosition(self, battleType):
+        if (None not in [self.x, self.y]) and _config.get(self.S_MOVE_IN_BATTLE, False):
+            userprefs.set(HIT_LOG_SECTIONS.LOG + '{}'.format(battleType), {'x': self.x, 'y': self.y})
+
+    def reset(self):
+        self.listLog = []
+        self.groupHitByPlayer.reset()
+        self.groupHitByFireRamming.reset()
+
+    def mouse_down(self, _data):
+        if _data['buttonIdx'] == 0:
+            self._data = _data
+
+    def mouse_up(self, _data):
+        if _data['buttonIdx'] == 0:
+            self._data = None
+
+    def mouse_move(self, _data):
+        if self._data:
+            self.x += (_data['x'] - self._data['x'])
+            self.y += (_data['y'] - self._data['y'])
+            as_event(ON_HIT_LOG)
+
+    def updatePosition(self):
+        if (self.section == HIT_LOG_SECTIONS.LOG) or (self.section == HIT_LOG_SECTIONS.ALT_LOG):
+            if not _config.get(self.S_MOVE_IN_BATTLE, False):
+                self.x = parser(_config.get(self.S_X, self.DEFAULT_X))
+                self.y = parser(_config.get(self.S_Y, self.DEFAULT_Y))
 
     def output(self):
-        self.countLines = len(self.listLog)
-        self.maxCountLines = int(parser(config.get(self.S_LINES, 7), {'battletype-key': _data.data.get('battletype-key', None)}))
-        if not self.maxCountLines:
-            return
-        self.isAddToEnd = config.get(self.S_ADD_TO_END, False)
-
-        if config.get(self.S_GROUP_HITS_PLAYER, True):
-            self.groupHitsPlayer()
+        if _config.get(self.S_GROUP_HITS_PLAYER, True):
+            self.listLog = self.groupHitByPlayer.getListLog()
         else:
-            self.notGroupHitsPlayer()
+            self.listLog = self.groupHitByFireRamming.getListLog()
+        self.updatePosition()
         if self.callEvent:
-            as_event('ON_HIT_LOG')
-
-_log = HitLog(SECTION_LOG)
-_logAlt = HitLog(SECTION_ALT_LOG)
-_logBackground = HitLog(SECTION_BACKGROUND)
-_logAltBackground = HitLog(SECTION_ALT_BACKGROUND)
+            as_event(ON_HIT_LOG)
 
 
-@registerEvent(PlayerAvatar, 'updateVehicleGunReloadTime')
-def _PlayerAvatar_updateVehicleGunReloadTime(self, vehicleID, timeLeft, baseTime):
-    if battle.isBattleTypeSupported and (timeLeft <= 0.0) and config.get(ENABLED, True):
-        _data.reload()
+_log = HitLog(HIT_LOG_SECTIONS.LOG)
+_logAlt = HitLog(HIT_LOG_SECTIONS.ALT_LOG)
+_logBackground = HitLog(HIT_LOG_SECTIONS.BACKGROUND)
+_logAltBackground = HitLog(HIT_LOG_SECTIONS.ALT_BACKGROUND)
+
+
+@registerEvent(PlayerAvatar, '_PlayerAvatar__processVehicleAmmo')
+def PlayerAvatar__processVehicleAmmo(self, vehicleID, compactDescr, quantity, quantityInClip, _, __):
+    if battle.isBattleTypeSupported and _config.get(HIT_LOG_ENABLED, True):
+        _data.loaded()
 
 
 @registerEvent(DestructibleEntity, 'onEnterWorld')
@@ -734,22 +793,22 @@ def DestructibleEntity_onEnterWorld(self, prereqs):
 @registerEvent(DestructibleEntity, 'onHealthChanged')
 def DestructibleEntity_onHealthChanged(self, newHealth, attackerID, attackReasonID, hitFlags):
     destructibleEntityComponent = BigWorld.player().arena.componentSystem.destructibleEntityComponent
-    if config.get(ENABLED, True) and battle.isBattleTypeSupported and (destructibleEntityComponent is not None):
+    if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported and (destructibleEntityComponent is not None):
         if (_data.playerVehicleID == attackerID) and (self.id not in _data.vehDead):
-            if not self.isPlayerTeam or config.get(SHOW_ALLY_DAMAGE, True):
+            if not self.isPlayerTeam or _config.get(SHOW_ALLY_DAMAGE, True):
                 _data.onHealthChanged(self, newHealth, attackerID, attackReasonID, False)
         _data.updateVehInfo(self)
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
 def _Vehicle_showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor):
-    if battle.isBattleTypeSupported and (_data.playerVehicleID == attackerID) and self.isAlive() and config.get(ENABLED, True):
+    if battle.isBattleTypeSupported and (_data.playerVehicleID == attackerID) and self.isAlive() and _config.get(HIT_LOG_ENABLED, True):
         _data.showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor)
 
 
 @registerEvent(Vehicle, 'showDamageFromExplosion')
 def _Vehicle_showDamageFromExplosion(self, attackerID, center, effectsIndex, damageFactor):
-    if battle.isBattleTypeSupported and (_data.playerVehicleID == attackerID) and self.isAlive() and config.get(ENABLED, True):
+    if battle.isBattleTypeSupported and (_data.playerVehicleID == attackerID) and self.isAlive() and _config.get(HIT_LOG_ENABLED, True):
         _data.data['splashHit'] = True
         _data.data['criticalHit'] = False
 
@@ -762,8 +821,8 @@ def __onArenaVehicleKilled(self, targetID, attackerID, equipmentID, reason):
 
 @registerEvent(Vehicle, 'onEnterWorld')
 def _Vehicle_onEnterWorld(self, prereqs):
-    global autoReloadConfig, hitLogConfig, chooseRating
-    if config.get(ENABLED, True) and battle.isBattleTypeSupported:
+    global hitLogConfig, chooseRating
+    if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
         if self.id in _data.vehDead:
             _data.vehDead.remove(self.id)
         if self.isPlayerVehicle:
@@ -775,36 +834,35 @@ def _Vehicle_onEnterWorld(self, prereqs):
             else:
                 chooseRating = 'xwgr' if scale == 'xvm' else 'wgr'
             _data.onEnterWorld(self)
-            autoReloadConfig = config.get('autoReloadConfig')
-            if not (autoReloadConfig or hitLogConfig):
-                for section in SECTIONS:
+            if not (config.config_autoreload or hitLogConfig):
+                for section in HIT_LOG_SECTIONS.SECTIONS:
                     hitLogConfig[section] = readyConfig(section)
             _log.setPosition(_data.data.get('battletype-key', None))
 
 
 @registerEvent(Vehicle, 'startVisual')
 def _Vehicle_startVisual(self):
-    if config.get(ENABLED, True) and battle.isBattleTypeSupported:
+    if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
         _data.updateVehInfo(self)
 
 
 @registerEvent(Vehicle, 'onHealthChanged')
 def _Vehicle_onHealthChanged(self, newHealth, attackerID, attackReasonID):
-    if config.get(ENABLED, True) and battle.isBattleTypeSupported:
+    if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
         if (_data.playerVehicleID == attackerID) and (self.id not in _data.vehDead):
             attacked = _data.player.arena.vehicles.get(self.id)
-            if (_data.player.team != attacked['team']) or config.get(SHOW_ALLY_DAMAGE, True):
-                if (self.id != attackerID) or config.get(SHOW_SELF_DAMAGE, True):
+            if (_data.player.team != attacked['team']) or _config.get(SHOW_ALLY_DAMAGE, True):
+                if (self.id != attackerID) or _config.get(SHOW_SELF_DAMAGE, True):
                     _data.onHealthChanged(self, newHealth, attackerID, attackReasonID)
             else:
-                if (self.id == attackerID) and config.get(SHOW_SELF_DAMAGE, True):
+                if (self.id == attackerID) and _config.get(SHOW_SELF_DAMAGE, True):
                     _data.onHealthChanged(self, newHealth, attackerID, attackReasonID)
         _data.updateVehInfo(self)
 
 
 @registerEvent(PlayerAvatar, '_PlayerAvatar__destroyGUI')
 def PlayerAvatar__destroyGUI(self):
-    if config.get(ENABLED, True) and battle.isBattleTypeSupported:
+    if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
         _log.savePosition(_data.data.get('battletype-key', None))
         _log.reset()
         _logAlt.reset()
@@ -816,22 +874,22 @@ def PlayerAvatar__destroyGUI(self):
 @registerEvent(PlayerAvatar, 'handleKey')
 def PlayerAvatar_handleKey(self, isDown, key, mods):
     global isDownAlt
-    if config.get(ENABLED, True) and battle.isBattleTypeSupported:
-        hotkey = config.get('hotkeys/hitLogAltMode')
+    if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
+        hotkey = _config.get('hotkeys/hitLogAltMode')
         if hotkey['enabled'] and (key == hotkey['keyCode']):
             if isDown:
                 if hotkey['onHold']:
                     if not isDownAlt:
                         isDownAlt = True
-                        as_event('ON_HIT_LOG')
+                        as_event(ON_HIT_LOG)
                 else:
                     isDownAlt = not isDownAlt
-                    as_event('ON_HIT_LOG')
+                    as_event(ON_HIT_LOG)
             else:
                 if hotkey['onHold']:
                     if isDownAlt:
                         isDownAlt = False
-                        as_event('ON_HIT_LOG')
+                        as_event(ON_HIT_LOG)
 
 
 def hLog():

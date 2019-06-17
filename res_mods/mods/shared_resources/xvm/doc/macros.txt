@@ -37,7 +37,8 @@ Legend:
 │ H │ {{nation}}         │ X │ X │ X │ X │ X │ X │ vehicle nation
 │ H │ {{level}}          │ X │ X │ X │ X │ X │ X │ vehicle level (Arabic numerals)
 │ H │ {{rlevel}}         │ X │ X │ X │ X │ X │ X │ vehicle level (Roman numerals)
-│ H │ {{premium}}        │ X │ X │ X │ X │ X │ X │ 'premium' for premium, empty for normal vehicle
+│ H │ {{premium}}        │ X │ X │ X │ X │ X │ X │ value 'premium' for premium, empty for normal vehicle
+│ H │ {{special}}        │ X │ X │ X │ X │ X │ X │ value 'special' for award and event (excluding premium vehicles with increased income on credits) vehicle, empty for normal vehicle
 │ H │ {{squad}}          │ X │ X │ X │ X │ X │   │ value 'sq' for own squad, empty for others
 │ D │ {{frags}}          │   │ X │ X │ X │ X │   │ current frags
 │ H │ {{ready}}          │ X │ X │ X │ X │ X │   │ value 'ready' if player loaded to the game, '' if not
@@ -106,13 +107,14 @@ Legend:
 │ S │ {{my-nation}}          │ X │ X │ X │ X │ X │ X │ my vehicle nation
 │ S │ {{my-level}}           │ X │ X │ X │ X │ X │ X │ my vehicle level (Arabic numerals)
 │ S │ {{my-rlevel}}          │ X │ X │ X │ X │ X │ X │ my vehicle level (Roman numerals)
-│ S │ {{my-premium}}         │ X │ X │ X │ X │ X │ X │ 'premium' for premium, empty for normal vehicle
+│ S │ {{my-premium}}         │ X │ X │ X │ X │ X │ X │ value 'premium' for premium, empty for normal vehicle
+│ S │ {{my-special}}         │ X │ X │ X │ X │ X │ X │ value 'special' for award and event (excluding premium vehicles with increased income on credits) vehicle, empty for normal vehicle
 │ S │ {{my-clan}}            │ X │ X │ X │ X │ X │ X │ my clan
 │ S │ {{cellsize}}           │   │ X │ X │ X │ X │ X │ minimap cell side size
 │ D │ {{pp.mode}}            │   │ X │ X │ X │   │ X │ current players panel mode (0-none, 1-small, 2-medium, 3-medium2, 4-large)
 │ D │ {{pp.widthLeft}}       │   │ X │ X │ X │   │ X │ current left players panel width
 │ D │ {{pp.widthRight}}      │   │ X │ X │ X │   │ X │ current right players panel width
-│ D │ {{hasBadges}}          │   │ X │ X │ X │   │ X │ 'true' if at least one player in the team has badge, empty if not
+│ D │ {{hasBadges}}          │   │ X │ X │ X │   │ X │ value 'true' if at least one player in the team has badge, empty if not
 └───┴────────────────────────┴───┴───┴───┴───┴───┴───┴──────────────────────────────────────
 
   Statistic macros
@@ -124,13 +126,13 @@ Legend:
 │ S │ {{xr}}             │ X │ X │ X │ X │ X │ X │ same as {{r}} but always in XVM Scale
 │ S │ {{xte}}            │ X │ X │ X │ X │ X │ X │ per-vehicle efficiency (xTE) (values 00-99, XX for Tops)
 │ S │ {{eff}}            │ X │ X │ X │ X │ X │ X │ player efficiency: https://koreanrandom.com/forum/topic/13386-/
-│ S │ {{wtr}}            │ X │ X │ X │ X │ X │ X │ WTR rating: https://koreanrandom.com/forum/topic/41382-/
+│ S │ {{wtr}}            │ X │ X │ X │ X │ X │ X │ WTR rating: https://koreanrandom.com/forum/topic/41383-/
 │ S │ {{wn8}}            │ X │ X │ X │ X │ X │ X │ WN8 rating: https://koreanrandom.com/forum/topic/13434-/
-│ S │ {{wgr}}            │ X │ X │ X │ X │ X │ X │ WG personal rating:  https://koreanrandom.com/forum/topic/13433-/
+│ S │ {{wgr}}            │ X │ X │ X │ X │ X │ X │ WGR rating: https://koreanrandom.com/forum/topic/13433-/
 │ S │ {{xeff}}           │ X │ X │ X │ X │ X │ X │ XVM Scale for efficiency (values 00-99, XX for Tops)
 │ S │ {{xwtr}}           │ X │ X │ X │ X │ X │ X │ XVM Scale for WTR (values 00-99, XX for Tops)
 │ S │ {{xwn8}}           │ X │ X │ X │ X │ X │ X │ XVM Scale for WN8 (values 00-99, XX for Tops)
-│ S │ {{xwgr}}           │ X │ X │ X │ X │ X │ X │ XVM Scale for WG personal rating (values 00-99, XX for Tops)
+│ S │ {{xwgr}}           │ X │ X │ X │ X │ X │ X │ XVM Scale for WGR (values 00-99, XX for Tops)
 │ S │ {{winrate}}        │ X │ X │ X │ X │ X │ X │ GWR (Global Win Ratio)
 │ S │ {{xwr}}            │ X │ X │ X │ X │ X │ X │ XVM Scale for GWR
 │ S │ {{battles}}        │ X │ X │ X │ X │ X │ X │ total battles count
@@ -154,11 +156,11 @@ Legend:
 │ S │ {{c:xeff}}         │ X │ X │ X │ X │ X │ X │ color depending on XVM Scale for efficiency
 │ S │ {{c:xwtr}}         │ X │ X │ X │ X │ X │ X │ color depending on XVM Scale for WTR
 │ S │ {{c:xwn8}}         │ X │ X │ X │ X │ X │ X │ color depending on XVM Scale for WN8
-│ S │ {{c:xwgr}}         │ X │ X │ X │ X │ X │ X │ color depending on XVM Scale for WG rating
+│ S │ {{c:xwgr}}         │ X │ X │ X │ X │ X │ X │ color depending on XVM Scale for WGR
 │ S │ {{c:eff}}          │ X │ X │ X │ X │ X │ X │ color depending on player efficiency
 │ S │ {{c:wtr}}          │ X │ X │ X │ X │ X │ X │ color depending on WTR rating
 │ S │ {{c:wn8}}          │ X │ X │ X │ X │ X │ X │ color depending on WN8 rating
-│ S │ {{c:wgr}}          │ X │ X │ X │ X │ X │ X │ color depending on WG rating
+│ S │ {{c:wgr}}          │ X │ X │ X │ X │ X │ X │ color depending on WGR rating
 │ S │ {{c:winrate}}      │ X │ X │ X │ X │ X │ X │ color depending on GWR
 │ S │ {{c:xwr}}          │ X │ X │ X │ X │ X │ X │ color depending on XVM Scale for GWR
 │ S │ {{c:kb}}           │ X │ X │ X │ X │ X │ X │ color depending on kilo-battles
