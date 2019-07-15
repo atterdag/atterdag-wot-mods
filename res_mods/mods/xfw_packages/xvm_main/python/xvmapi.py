@@ -1,6 +1,8 @@
 """ XVM (c) https://modxvm.com 2013-2019 """
 
+import simplejson
 from consts import *
+from xfw import getCurrentBattleInfo, urlSafeBase64Encode
 import urllib
 
 # PUBLIC
@@ -11,11 +13,13 @@ def getToken():
 
 def getVersion(wgmLimit=50, wshLimit=50):
     (data, errStr) = _exec('getVersion/{id}/{ver}/{wgm}/{wsh}',
-        params={'ver':urllib.quote(XVM.XVM_VERSION),'wgm':wgmLimit,'wsh':wshLimit})
+        params={'ver':urllib.quote('{0}#{1}'.format(XVM.XVM_VERSION,XVM.XVM_REVISION)),'wgm':wgmLimit,'wsh':wshLimit})
     return data
 
 def getStats(request):
-    (data, errStr) = _exec('getStats/{token}/{request}', params={'request':request})
+    (data, errStr) = _exec('getStats/{token}/{request}?battleInfo={battleInfo}', params={
+        'request':request,
+        'battleInfo':urlSafeBase64Encode(simplejson.dumps(getCurrentBattleInfo(), separators=(',',':'), sort_keys=True))})
     return data
 
 def getStatsReplay(request):

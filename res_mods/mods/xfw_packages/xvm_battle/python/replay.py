@@ -42,7 +42,8 @@ def _PlayerAvatar_onBecomePlayer(self):
             }
         else:
             #log('play: ' + str(fileName))
-            xvm_data = simplejson.loads(g_replayCtrl._BattleReplay__replayCtrl.getArenaInfoStr()).get('xvm', None)
+            arena_json_data = g_replayCtrl._BattleReplay__replayCtrl.getArenaInfoStr()
+            xvm_data = simplejson.loads(arena_json_data).get('xvm', None) if arena_json_data else None
             if xvm_data:
                 xvm_data = unicode_to_ascii(xvm_data)
                 if xvm_data.get('ver', None) == '1.0':
@@ -92,7 +93,7 @@ def _BattleReplay_stop(base, self, rewindToTime = None, delete = False, isDestro
                 if arenaInfoStr:
                     arenaInfo = simplejson.loads(arenaInfoStr)
                     arenaInfo.update({"xvm":utils.pretty_floats(_xvm_record_data)})
-                    self._BattleReplay__replayCtrl.setArenaInfoStr(simplejson.dumps(arenaInfo))
+                    self._BattleReplay__replayCtrl.setArenaInfoStr(simplejson.dumps(arenaInfo, separators=(',',':')))
                 _xvm_record_data = None
     except Exception as ex:
         err(traceback.format_exc())

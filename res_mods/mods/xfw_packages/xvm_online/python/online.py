@@ -46,9 +46,9 @@ class _Get_online(object):
         self.resp = None
         self.done_config = False
         self.loginSection = ResMgr.openSection('scripts_config.xml')['login']
-        self.region = getRegion().lower()
-        if 'CT' in URLS.WG_API_SERVERS and self.region == 'ct': # CT is uncommented in xfw.constants to check on test server
-            self.region = 'ru'
+        self.region = getRegion().upper()
+        if 'CT' in URLS.WG_API_SERVERS and self.region == 'CT': # CT is uncommented in xfw.constants to check on test server
+            self.region = 'RU'
 
     def update_config(self):
         self.loginErrorString = l10n(config.get('login/onlineServers/errorString', '--k'))
@@ -60,6 +60,7 @@ class _Get_online(object):
 
         self.loginHosts = []
         self.hangarHosts = []
+        self.peripheryIdMap = {}
         if self.loginSection is not None:
             for (name, subSec) in self.loginSection.items():
                 host_name = subSec.readStrings('short_name')[0]
@@ -67,6 +68,7 @@ class _Get_online(object):
                     self.loginHosts.append(host_name)
                 if host_name not in ignoredServersHangar:
                     self.hangarHosts.append(host_name)
+                self.peripheryIdMap[subSec.readStrings('periphery_id')[0]] = host_name
             alphanumeric_sort(self.loginHosts)
             alphanumeric_sort(self.hangarHosts)
             self.done_config = True
@@ -110,22 +112,18 @@ class _Get_online(object):
                 return
             # typical response:
             #{
-            #    "eu":  [{"players_online":4297,"server":"EU2"},{"players_online":8331,"server":"EU1"}],
-            #    "na":  [{"players_online":22740,"server":"NA EAST"},{"players_online":7431,"server":"NA WEST"}],
-            #    "asia":[{"players_online":6603,"server":"ASIA"}],
-            #    "ru":  [{"players_online":14845,"server":"RU8"},{"players_online":8597,"server":"RU2"},{"players_online":9847,"server":"RU1"},{"players_online":3422,"server":"RU3"},{"players_online":11508,"server":"RU6"},{"players_online":6795,"server":"RU5"},{"players_online":3354,"server":"RU4"}]
+            #    "EU":  [{"players_online":4297,"server":"EU2"},{"players_online":8331,"server":"EU1"}],
+            #    "NA":  [{"players_online":22740,"server":"303"}],
+            #    "ASIA":[{"players_online":6603,"server":"503"},{"players_online":6101,"server":"502"}],
+            #    "RU":  [{"players_online":14845,"server":"RU8"},{"players_online":8597,"server":"RU2"},{"players_online":9847,"server":"RU1"},{"players_online":3422,"server":"RU3"},{"players_online":11508,"server":"RU6"},{"players_online":6795,"server":"RU5"},{"players_online":3354,"server":"RU4"}]
             #}
-
             data_dict = {}
             data_region = data.get(self.region, None)
             if not data_region:
                 return
             for data_host in data_region:
                 server = data_host['server']
-                if server.startswith('NA '): # API returns "NA EAST" instead of "US East" => can't determine current server
-                    server = 'US ' + server[3:].capitalize()
-                if self.region == 'ru' and server == '110':
-                    server = 'RU10'
+                server = self.peripheryIdMap.get(server, server)
                 data_dict[server] = data_host['players_online']
 
             res = []

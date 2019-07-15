@@ -115,7 +115,7 @@ class _Contacts:
             else:
                 self.cached_data['players'][str(uid)] = value
 
-            json_data = simplejson.dumps(self.cached_data)
+            json_data = simplejson.dumps(self.cached_data, separators=(',',':'))
             #log(json_data)
             self._doRequest('addComments', json_data)
 
@@ -142,7 +142,7 @@ class _Contacts:
     def _doRequest(self, cmd, body=None):
         req = '{0}/{1}'.format(cmd, self.cached_token)
         server = XVM.SERVERS[randint(0, len(XVM.SERVERS) - 1)]
-        (response, duration, errStr) = loadUrl(server, req, body=body, api=XVM.API_VERSION_OLD)
+        (response, duration, errStr) = loadUrl(server, req, body=body, api=XVM.API_VERSION)
 
         if errStr:
             raise Exception(errStr)

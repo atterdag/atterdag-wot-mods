@@ -4,7 +4,7 @@
  */
 {
   "vehicleNames": {
-    // Last update: 23.05.2019
+    // Last update: 20.06.2019
     "china-Ch01_Type59":                     {"name": null, "short": null},
     "china-Ch01_Type59_Gold":                {"name": null, "short": null},
     "china-Ch02_Type62":                     {"name": null, "short": null},
@@ -90,6 +90,7 @@
     "france-F110_Lynx_6x6":                  {"name": null, "short": null},
     "france-F111_AM39_Gendron_Somua":        {"name": null, "short": null},
     "france-F112_M10_RBFM":                  {"name": null, "short": null},
+    "france-F113_Bretagne_Panther":          {"name": null, "short": null},
     "france-F11_Renault_G1R":                {"name": null, "short": null},
     "france-F12_Hotchkiss_H35":              {"name": null, "short": null},
     "france-F13_AMX38":                      {"name": null, "short": null},
@@ -213,6 +214,7 @@
     "germany-G139_MKA":                      {"name": null, "short": null},
     "germany-G13_VK3001H":                   {"name": null, "short": null},
     "germany-G140_HWK_30":                   {"name": null, "short": null},
+    "germany-G141_VK7501K":                  {"name": null, "short": null},
     "germany-G15_VK3601H":                   {"name": null, "short": null},
     "germany-G16_PzVIB_Tiger_II":            {"name": null, "short": null},
     "germany-G16_PzVIB_Tiger_II_F":          {"name": null, "short": null},
@@ -402,6 +404,7 @@
     "uk-GB08_Churchill_I":                   {"name": null, "short": null},
     "uk-GB08_Churchill_I_IGR":               {"name": null, "short": null},
     "uk-GB09_Churchill_VII":                 {"name": null, "short": null},
+    "uk-GB101_FV1066_Senlac":                {"name": null, "short": null},
     "uk-GB10_Black_Prince":                  {"name": null, "short": null},
     "uk-GB11_Caernarvon":                    {"name": null, "short": null},
     "uk-GB11_Caernarvon_IGR":                {"name": null, "short": null},
@@ -669,6 +672,7 @@
     "ussr-R159_SU_130PM":                    {"name": null, "short": null},
     "ussr-R15_S-51":                         {"name": null, "short": null},
     "ussr-R160_T_50_2":                      {"name": null, "short": null},
+    "ussr-R161_T_116":                       {"name": null, "short": null},
     "ussr-R16_SU-18":                        {"name": null, "short": null},
     "ussr-R17_SU-100":                       {"name": null, "short": null},
     "ussr-R18_SU-152":                       {"name": null, "short": null},
