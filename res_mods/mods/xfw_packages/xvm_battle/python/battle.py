@@ -30,7 +30,7 @@ from gui.Scaleform.daapi.view.battle.shared.markers2d import settings as markers
 from gui.Scaleform.daapi.view.battle.shared.minimap.plugins import ArenaVehiclesPlugin
 from gui.Scaleform.daapi.view.battle.shared.page import SharedPage
 from gui.Scaleform.daapi.view.battle.shared.stats_exchage import BattleStatisticsDataController
-from gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins import TrajectoryViewHintPlugin, SiegeIndicatorHintPlugin, PreBattleHintPlugin
+from gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins import TrajectoryViewHintPlugin, SiegeIndicatorHintPlugin, PreBattleHintPlugin, RadarHintPlugin
 from helpers import dependency
 from skeletons.gui.app_loader import IAppLoader
 
@@ -50,7 +50,8 @@ import xmqp_events
 
 NOT_SUPPORTED_BATTLE_TYPES = [constants.ARENA_GUI_TYPE.TUTORIAL,
                            constants.ARENA_GUI_TYPE.EVENT_BATTLES,
-                           constants.ARENA_GUI_TYPE.BOOTCAMP]
+                           constants.ARENA_GUI_TYPE.BOOTCAMP,
+                           constants.ARENA_GUI_TYPE.BATTLE_ROYALE]
 
 #####################################################################
 # initialization/finalization
@@ -185,8 +186,8 @@ def _DamagePanel_updateDeviceState(self, value):
     except:
         err(traceback.format_exc())
 
-@registerEvent(ArenaVehiclesPlugin, '_ArenaVehiclesPlugin__setInAoI')
-def _ArenaVehiclesPlugin__setInAoI(self, entry, isInAoI):
+@registerEvent(ArenaVehiclesPlugin, '_setInAoI')
+def _ArenaVehiclesPlugin_setInAoI(self, entry, isInAoI):
     try:
         for vehicleID, entry2 in self._entries.iteritems():
             if entry == entry2:
@@ -234,6 +235,12 @@ def canDisplayHelpHint(base, self, typeDescriptor):
         return False
     base(self, typeDescriptor)
 
+@overrideMethod(RadarHintPlugin, '_RadarHintPlugin__showHint')
+def showHint(base, self):
+    if config.get('battle/battleHint/hideRadarHint'):
+        return
+    base(self)
+
 @overrideMethod(SharedPage, '_definePostmortemPanel')
 def _definePostmortemPanel(base, self):
     if not config.get('battle/showPostmortemDogtag'):
@@ -277,7 +284,8 @@ class Battle(object):
         if view and view.uniqueName in [VIEW_ALIAS.CLASSIC_BATTLE_PAGE,
                                         VIEW_ALIAS.EPIC_RANDOM_PAGE,
                                         VIEW_ALIAS.EPIC_BATTLE_PAGE,
-                                        VIEW_ALIAS.RANKED_BATTLE_PAGE]:
+                                        VIEW_ALIAS.RANKED_BATTLE_PAGE,
+                                        VIEW_ALIAS.BATTLE_ROYALE_PAGE]:
             self.battle_page = weakref.proxy(view)
 
     def onStartBattle(self):

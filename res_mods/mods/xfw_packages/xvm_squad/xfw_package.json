@@ -3,13 +3,13 @@
     "name": "XVM Squad",
     "description": "XVM Squad module",
 
-    "version": "8.0.1.9291",
+    "version": "8.0.3.9317",
     "dependencies": ["com.modxvm.xvm"],
 
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
     
-    "wot_version_min": "1.6.0.1",
+    "wot_version_min": "1.6.0.4",
     "wot_version_exactmatch": false,
 
     "features": ["python"]
