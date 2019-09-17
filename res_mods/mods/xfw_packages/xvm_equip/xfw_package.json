@@ -3,13 +3,13 @@
     "name": "XVM Equip",
     "description": "XVM Equip Module",
 
-    "version": "8.0.4-dev.8990",
+    "version": "8.0.5.9344",
     "dependencies": ["com.modxvm.xvm"],
 
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
 
-    "wot_version_min": "1.6.0.5",
+    "wot_version_min": "1.6.0.6",
     "wot_version_exactmatch": false,
 
     "features": ["python"]
