@@ -14,7 +14,7 @@
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 6
 !define VERSIONPATCH 0
-!define VERSIONBUILD 7-rc1
+!define VERSIONBUILD 7
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "https://github.com/atterdag/atterdag-wot-mods/issues"   # "Support Information" link

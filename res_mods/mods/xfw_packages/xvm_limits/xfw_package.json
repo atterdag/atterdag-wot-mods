@@ -3,7 +3,7 @@
     "name": "XVM Limits",
     "description": "XVM Limits Module",
 
-    "version": "8.0.5-dev.9355",
+    "version": "8.0.5.9359",
     "dependencies": ["com.modxvm.xvm"],
 
     "url": "https://modxvm.com/",
