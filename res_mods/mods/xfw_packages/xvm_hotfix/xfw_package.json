@@ -3,13 +3,13 @@
     "name": "XVM Hotfix",
     "description": "XVM Hotfix Module",
 
-    "version": "8.0.5.9344",
+    "version": "8.0.5-dev.9355",
     "dependencies": ["com.modxvm.xvm"],
 
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
 
-    "wot_version_min": "1.6.0.6",
+    "wot_version_min": "1.6.0.7",
     "wot_version_exactmatch": false,
 
     "features": ["python"]
